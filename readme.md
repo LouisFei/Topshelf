@@ -1,7 +1,9 @@
-Topshelf - An easy service hosting framework for building Windows services using .NET
+﻿Topshelf - An easy service hosting framework for building Windows services using .NET
 =======
 
 Topshelf is a framework for hosting services written using the .NET framework. The creation of services is simplified, allowing developers to create a simple console application that can be installed as a service using Topshelf. The reason for this is simple: It is far easier to debug a console application than a service. And once the application is tested and ready for production, Topshelf makes it easy to install the application as a service.
+
+Topshelf是一个用于托管使用.NET framework开发的服务的框架。服务的创建是简单的，Topshelf允许开发人员创建一个可以被安装为服务的简单的控制台程序。简单的原因是：这样调试的时候远比一个服务要容易。当程序被测试并准备发布时，Topshelf很容易将一个程序以服务的形式被安装。
 
 ### Develop build
 [![Build status](https://ci.appveyor.com/api/projects/status/cjlqe1lg0733c936/branch/develop?svg=true)](https://ci.appveyor.com/project/phatboyg/topshelf)
