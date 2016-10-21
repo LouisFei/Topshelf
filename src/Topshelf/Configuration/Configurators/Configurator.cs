@@ -14,8 +14,16 @@ namespace Topshelf.Configurators
 {
     using System.Collections.Generic;
 
+    /// <summary>
+    /// 配置器接口。
+    /// 接口命名建议以“I”为前辍。
+    /// </summary>
     public interface Configurator
     {
+        /// <summary>
+        /// 校验
+        /// </summary>
+        /// <returns></returns>
         IEnumerable<ValidateResult> Validate();
     }
 }

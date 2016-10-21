@@ -16,6 +16,9 @@ namespace Topshelf.Logging
     using System.Globalization;
     using Topshelf.Logging;
 
+    /// <summary>
+    /// Log4Net¥˙¿Ì¿‡
+    /// </summary>
     public class Log4NetLogWriter :
         LogWriter
     {

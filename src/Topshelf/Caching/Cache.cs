@@ -4,6 +4,7 @@ namespace Topshelf.Caching
     using System.Collections.Generic;
 
     /// <summary>
+    /// 一个扩展增强的缓存接口
     /// A cache implementation that extends the capability of most dictionary style classes to
     /// have a more complete set of methods commonly used in a dictionary scenario.
     /// </summary>

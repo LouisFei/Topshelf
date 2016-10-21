@@ -17,11 +17,13 @@ namespace Topshelf
 
     /// <summary>
     ///   Extensions for configuring Logging for log4net
+    ///   主机配置器关于log4net日志使用的扩展方法。
     /// </summary>
     public static class Log4NetConfigurationExtensions
     {
         /// <summary>
         ///   Specify that you want to use the Log4net logging engine.
+        ///   设置使用Log4net日志引擎。
         /// </summary>
         /// <param name="configurator"> </param>
         public static void UseLog4Net(this HostConfigurator configurator)
@@ -31,9 +33,10 @@ namespace Topshelf
 
         /// <summary>
         ///   Specify that you want to use the Log4net logging engine.
+        ///   指定你想使用Log4net日志引擎。
         /// </summary>
         /// <param name="configurator"> </param>
-        /// <param name="configFileName"> The name of the log4net xml configuration file </param>
+        /// <param name="configFileName"> The name of the log4net xml configuration file。log4net配置文件名。 </param>
         public static void UseLog4Net(this HostConfigurator configurator, string configFileName)
         {
             Log4NetLogWriterFactory.Use(configFileName);
@@ -44,7 +47,7 @@ namespace Topshelf
         /// </summary>
         /// <param name="configurator"> </param>
         /// <param name="configFileName"> The name of the log4net xml configuration file </param>
-        /// <param name="watchFile"> Should log4net watch the config file? </param>
+        /// <param name="watchFile"> Should log4net watch the config file? 监视log4net配置文件</param>
         public static void UseLog4Net(this HostConfigurator configurator, string configFileName, bool watchFile)
         {
             Log4NetLogWriterFactory.Use(configFileName, watchFile);

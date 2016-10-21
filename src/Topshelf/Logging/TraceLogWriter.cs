@@ -16,6 +16,9 @@ namespace Topshelf.Logging
     using System.Diagnostics;
     using System.Globalization;
 
+    /// <summary>
+    /// 
+    /// </summary>
     public class TraceLogWriter :
         LogWriter
     {

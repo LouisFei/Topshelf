@@ -12,8 +12,15 @@
 // specific language governing permissions and limitations under the License.
 namespace Topshelf.Logging
 {
+    /// <summary>
+    /// 主机日志配置接口
+    /// </summary>
     public interface HostLoggerConfigurator
     {
+        /// <summary>
+        /// 创建日志工厂
+        /// </summary>
+        /// <returns></returns>
         LogWriterFactory CreateLogWriterFactory();
     }
 }

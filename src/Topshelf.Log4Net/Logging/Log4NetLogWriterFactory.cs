@@ -17,6 +17,9 @@ namespace Topshelf.Logging
     using log4net;
     using log4net.Config;
 
+    /// <summary>
+    /// Log4Net日志具体工厂
+    /// </summary>
     public class Log4NetLogWriterFactory :
         LogWriterFactory
     {
@@ -45,6 +48,9 @@ namespace Topshelf.Logging
             HostLogger.UseLogger(new Log4NetLoggerConfigurator(file, watch));
         }
 
+        /// <summary>
+        /// Log4Net日志配置器
+        /// </summary>
         [Serializable]
         public class Log4NetLoggerConfigurator :
             HostLoggerConfigurator

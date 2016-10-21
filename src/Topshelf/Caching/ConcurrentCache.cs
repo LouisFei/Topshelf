@@ -6,6 +6,11 @@ namespace Topshelf.Caching
     using System.Collections.Generic;
     using System.Linq;
 
+    /// <summary>
+    /// 支持并发的缓存
+    /// </summary>
+    /// <typeparam name="TKey"></typeparam>
+    /// <typeparam name="TValue"></typeparam>
     [Serializable]
     class ConcurrentCache<TKey, TValue> :
         Cache<TKey, TValue>
@@ -93,11 +98,17 @@ namespace Topshelf.Caching
             set { _valueRemovedCallback = value ?? DefaultCacheItemCallback; }
         }
 
+        /// <summary>
+        /// 缓存重复项时的处理方法
+        /// </summary>
         public CacheItemCallback<TKey, TValue> DuplicateValueAdded
         {
             set { _duplicateValueAdded = value ?? ThrowOnDuplicateValue; }
         }
 
+        /// <summary>
+        /// 缓存键选择器
+        /// </summary>
         public KeySelector<TKey, TValue> KeySelector
         {
             set { _keySelector = value ?? DefaultKeyAccessor; }
@@ -191,6 +202,11 @@ namespace Topshelf.Caching
             return Has(key);
         }
 
+        /// <summary>
+        /// 添加缓存项
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
         public void Add(TKey key, TValue value)
         {
             bool added = _values.TryAdd(key, value);
@@ -303,11 +319,21 @@ namespace Topshelf.Caching
             return defaultValue(key);
         }
 
+        /// <summary>
+        /// 键不存在异常方法
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         static TValue ThrowOnMissingValue(TKey key)
         {
             throw new KeyNotFoundException("The specified element was not found: " + key);
         }
 
+        /// <summary>
+        /// 缓存重复项时，抛出异常
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
         static void ThrowOnDuplicateValue(TKey key, TValue value)
         {
             throw new ArgumentException(

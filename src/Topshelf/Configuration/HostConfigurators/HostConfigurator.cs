@@ -14,56 +14,69 @@ namespace Topshelf.HostConfigurators
 {
     using System;
 
+    /// <summary>
+    /// 主机配置器接口。
+    /// 接口命名建议以“I”为前辍。
+    /// </summary>
     public interface HostConfigurator
     {
         /// <summary>
         ///   Specifies the name of the service as it should be displayed in the service control manager
+        ///   设置服务的显示名称。将在Windows服务控制管理器中显示。
         /// </summary>
         /// <param name="name"> </param>
         void SetDisplayName(string name);
 
         /// <summary>
         ///   Specifies the name of the service as it is registered in the service control manager
+        ///   设置服务的注册名称。将在Windows服务控制管理器中注册服务。
         /// </summary>
         /// <param name="name"> </param>
         void SetServiceName(string name);
 
         /// <summary>
         ///   Specifies the description of the service that is displayed in the service control manager
+        ///   设置服务的描述。
         /// </summary>
         /// <param name="description"> </param>
         void SetDescription(string description);
 
         /// <summary>
         ///   Specifies the service instance name that should be used when the service is registered
+        ///   指定服务的实例名。
         /// </summary>
         /// <param name="instanceName"> </param>
         void SetInstanceName(string instanceName);
 
         /// <summary>
         /// Sets the amount of time to wait for the service to start before timing out. Default is 10 seconds.
+        /// 设置服务启动前的等待时间，默认为10秒。
         /// </summary>
         /// <param name="startTimeOut"></param>
         void SetStartTimeout(TimeSpan startTimeOut);
 
         /// <summary>
         /// Sets the amount of time to wait for the service to stop before timing out. Default is 10 seconds.
+        /// 设置服务停止前的等待时间。默认为10秒。
         /// </summary>
         /// <param name="stopTimeOut"></param>
         void SetStopTimeout(TimeSpan stopTimeOut);
 
         /// <summary>
         /// Enable pause and continue support for the service (default is disabled)
+        /// 设置支持服务的暂停和继续。（默认为不可用）
         /// </summary>
         void EnablePauseAndContinue();
 
         /// <summary>
         /// Enable support for service shutdown (signaled by the host OS)
+        /// 设置支持服务关闭。
         /// </summary>
         void EnableShutdown();
 
         /// <summary>
         /// Enabled support for the session changed event
+        /// 设置支持会话改变事件。？？不太理解
         /// </summary>
         void EnableSessionChanged();
 

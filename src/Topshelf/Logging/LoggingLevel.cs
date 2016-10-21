@@ -15,6 +15,9 @@ namespace Topshelf.Logging
     using System.Collections.Generic;
     using System.Diagnostics;
 
+    /// <summary>
+    /// 日志等级
+    /// </summary>
     public class LoggingLevel
     {
         public static readonly LoggingLevel All = new LoggingLevel("All", 6, SourceLevels.All, TraceEventType.Verbose);
@@ -22,8 +25,7 @@ namespace Topshelf.Logging
         public static readonly LoggingLevel Error = new LoggingLevel("Error", 2, SourceLevels.Error, TraceEventType.Error);
         public static readonly LoggingLevel Fatal = new LoggingLevel("Fatal", 1, SourceLevels.Critical, TraceEventType.Critical);
 
-        public static readonly LoggingLevel Info = new LoggingLevel("Info", 4, SourceLevels.Information,
-            TraceEventType.Information);
+        public static readonly LoggingLevel Info = new LoggingLevel("Info", 4, SourceLevels.Information, TraceEventType.Information);
 
         public static readonly LoggingLevel None = new LoggingLevel("None", 0, SourceLevels.Off, TraceEventType.Critical);
         public static readonly LoggingLevel Warn = new LoggingLevel("Warn", 3, SourceLevels.Warning, TraceEventType.Warning);
@@ -33,6 +35,13 @@ namespace Topshelf.Logging
         readonly SourceLevels _sourceLevel;
         readonly TraceEventType _traceEventType;
 
+        /// <summary>
+        /// 日志等级
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="index"></param>
+        /// <param name="sourceLevel"></param>
+        /// <param name="traceEventType"></param>
         LoggingLevel(string name, int index, SourceLevels sourceLevel, TraceEventType traceEventType)
         {
             _name = name;
@@ -41,6 +50,9 @@ namespace Topshelf.Logging
             _traceEventType = traceEventType;
         }
 
+        /// <summary>
+        /// 日志等级集合
+        /// </summary>
         public static IEnumerable<LoggingLevel> Values
         {
             get
@@ -55,6 +67,9 @@ namespace Topshelf.Logging
             }
         }
 
+        /// <summary>
+        /// 标识引起跟踪的事件的类型
+        /// </summary>
         public TraceEventType TraceEventType
         {
             get { return _traceEventType; }
@@ -65,6 +80,9 @@ namespace Topshelf.Logging
             get { return _name; }
         }
 
+        /// <summary>
+        /// 指定由源开关和事件类型筛选器筛选的跟踪消息的级别
+        /// </summary>
         public SourceLevels SourceLevel
         {
             get { return _sourceLevel; }

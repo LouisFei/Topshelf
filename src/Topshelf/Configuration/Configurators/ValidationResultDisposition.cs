@@ -14,11 +14,23 @@ namespace Topshelf.Configurators
 {
     using System;
 
+    /// <summary>
+    /// 验证结果
+    /// </summary>
     [Serializable]
     public enum ValidationResultDisposition
     {
+        /// <summary>
+        /// 成功
+        /// </summary>
         Success,
+        /// <summary>
+        /// 警告
+        /// </summary>
         Warning,
+        /// <summary>
+        /// 失败
+        /// </summary>
         Failure,
     }
 }

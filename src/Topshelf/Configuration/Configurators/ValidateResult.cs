@@ -13,12 +13,15 @@
 namespace Topshelf.Configurators
 {
     /// <summary>
+    /// 验证结果
+    /// 收集配置信息在配置前，用于修正错误等？？
     /// Reports information about the configuration before configuring
     /// so that corrections can be made without allocating resources, etc.
     /// </summary>
     public interface ValidateResult
     {
         /// <summary>
+        /// 验证结果倾向
         /// The disposition of the result, any Failure items will prevent
         /// the configuration from completing.
         /// </summary>

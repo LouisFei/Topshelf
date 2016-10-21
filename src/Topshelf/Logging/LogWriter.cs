@@ -15,14 +15,30 @@ namespace Topshelf.Logging
     using System;
 
     /// <summary>
+    /// 日志接口。
     /// Implementers handle logging and filtering based on logging levels.
     /// </summary>
     public interface LogWriter
     {
+        /// <summary>
+        /// 调试
+        /// </summary>
         bool IsDebugEnabled { get; }
+        /// <summary>
+        /// 信息
+        /// </summary>
         bool IsInfoEnabled { get; }
+        /// <summary>
+        /// 警告
+        /// </summary>
         bool IsWarnEnabled { get; }
+        /// <summary>
+        /// 错误
+        /// </summary>
         bool IsErrorEnabled { get; }
+        /// <summary>
+        /// 严重错误
+        /// </summary>
         bool IsFatalEnabled { get; }
 
         void Log(LoggingLevel level, object obj);

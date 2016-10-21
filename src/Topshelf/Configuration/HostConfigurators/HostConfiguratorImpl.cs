@@ -23,7 +23,9 @@ namespace Topshelf.HostConfigurators
     using Runtime;
     using Runtime.Windows;
 
-
+    /// <summary>
+    /// 主机配置器的具体实现类。
+    /// </summary>
     public class HostConfiguratorImpl :
         HostConfigurator,
         Configurator
@@ -36,6 +38,10 @@ namespace Topshelf.HostConfigurators
         HostBuilderFactory _hostBuilderFactory;
         ServiceBuilderFactory _serviceBuilderFactory;
 
+        /// <summary>
+        /// 返回主机配置具体实现的实例
+        /// 默认构造函数
+        /// </summary>
         public HostConfiguratorImpl()
         {
             _configurators = new List<HostBuilderConfigurator>();
@@ -46,6 +52,10 @@ namespace Topshelf.HostConfigurators
             _hostBuilderFactory = DefaultHostBuilderFactory;
         }
 
+        /// <summary>
+        /// 验证
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<ValidateResult> Validate()
         {
             if (_hostBuilderFactory == null)
@@ -86,11 +96,19 @@ namespace Topshelf.HostConfigurators
             yield return this.Success("ServiceName", _settings.ServiceName);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
         public void SetDisplayName(string name)
         {
             _settings.DisplayName = name;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
         public void SetServiceName(string name)
         {
             _settings.Name = name;

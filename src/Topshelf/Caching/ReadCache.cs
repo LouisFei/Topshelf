@@ -4,9 +4,10 @@ namespace Topshelf.Caching
     using System.Collections.Generic;
 
     /// <summary>
-    /// A read-only view of a cache. Methods that are able to modify the cache contents are not
-    /// available in this reduced interface. Methods on this interface will NOT invoke a missing
-    /// item provider.
+    /// 一个只读的缓存接口
+    /// A read-only view of a cache. 
+    /// Methods that are able to modify the cache contents are not available in this reduced interface. 
+    /// Methods on this interface will NOT invoke a missing item provider.
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
     /// <typeparam name="TValue"></typeparam>
@@ -15,6 +16,7 @@ namespace Topshelf.Caching
     {
         /// <summary>
         /// The number of items in the cache
+        /// 缓存的数量
         /// </summary>
         int Count { get; }
 
@@ -34,12 +36,14 @@ namespace Topshelf.Caching
 
         /// <summary>
         /// Calls the specified callback with each value in the cache
+        /// 遍历缓存中的每一项，执行回调方法。
         /// </summary>
         /// <param name="callback">A callback that accepts the value for each item in the cache</param>
         void Each(Action<TValue> callback);
 
         /// <summary>
         /// Calls the specified callback with each item in the cache
+        /// 遍历缓存中的每一项，执行回调方法。
         /// </summary>
         /// <param name="callback">A callback that accepts the key and value for each item in the cache</param>
         void Each(Action<TKey, TValue> callback);

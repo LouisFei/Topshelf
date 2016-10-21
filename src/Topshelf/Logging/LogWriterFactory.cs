@@ -12,10 +12,21 @@
 // specific language governing permissions and limitations under the License.
 namespace Topshelf.Logging
 {
+    /// <summary>
+    /// 日志工厂接口
+    /// </summary>
     public interface LogWriterFactory
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         LogWriter Get(string name);
 
+        /// <summary>
+        /// 
+        /// </summary>
         void Shutdown();
     }
 }

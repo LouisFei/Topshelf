@@ -20,14 +20,16 @@ namespace Topshelf
 
     /// <summary>
     ///   Configure and run a service host using the HostFactory
+    ///   使用主机工厂配置和运行一个服务主机。
     /// </summary>
     public static class HostFactory
     {
         /// <summary>
         ///   Configures a new service host
+        ///   配置一个新服务主机
         /// </summary>
-        /// <param name="configureCallback"> Configuration method to call </param>
-        /// <returns> A Topshelf service host, ready to run </returns>
+        /// <param name="configureCallback"> Configuration method to call 主机配置回调方法</param>
+        /// <returns> A Topshelf service host, ready to run 返回一个Topshelf服务主机（准备运行）</returns>
         public static Host New(Action<HostConfigurator> configureCallback)
         {
             try
@@ -69,8 +71,9 @@ namespace Topshelf
 
         /// <summary>
         ///   Configures and runs a new service host, handling any exceptions and writing them to the log.
+        ///   配置并运行一个新的服务主机，所有异常将被捕获并记到日志里。
         /// </summary>
-        /// <param name="configureCallback"> Configuration method to call </param>
+        /// <param name="configureCallback"> Configuration method to call 配置回调方法</param>
         /// <returns> Returns the exit code of the process that should be returned by your application's main method </returns>
         public static TopshelfExitCode Run(Action<HostConfigurator> configureCallback)
         {

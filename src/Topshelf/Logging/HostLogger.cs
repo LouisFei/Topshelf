@@ -14,6 +14,9 @@ namespace Topshelf.Logging
 {
     using System;
 
+    /// <summary>
+    /// 主机日志类
+    /// </summary>
     public static class HostLogger
     {
         static readonly object _locker = new object();
@@ -59,6 +62,10 @@ namespace Topshelf.Logging
             return Current.Get(name);
         }
 
+        /// <summary>
+        /// 使用指定的主机日志配置
+        /// </summary>
+        /// <param name="configurator"></param>
         public static void UseLogger(HostLoggerConfigurator configurator)
         {
             lock (_locker)
