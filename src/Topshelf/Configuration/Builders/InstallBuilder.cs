@@ -19,26 +19,34 @@ namespace Topshelf.Builders
     using Hosts;
     using Runtime;
 
+    /// <summary>
+    /// 安装生成器
+    /// </summary>
     public class InstallBuilder :
-        HostBuilder
+        IHostBuilder
     {
         readonly IList<string> _dependencies;
-        readonly HostEnvironment _environment;
-        readonly IList<Action<InstallHostSettings>> _postActions;
-        readonly IList<Action<InstallHostSettings>> _preActions;
-        readonly IList<Action<InstallHostSettings>> _postRollbackActions;
-        readonly IList<Action<InstallHostSettings>> _preRollbackActions;
-        readonly HostSettings _settings;
+        readonly IHostEnvironment _environment;
+        readonly IList<Action<IInstallHostSettings>> _postActions;
+        readonly IList<Action<IInstallHostSettings>> _preActions;
+        readonly IList<Action<IInstallHostSettings>> _postRollbackActions;
+        readonly IList<Action<IInstallHostSettings>> _preRollbackActions;
+        readonly IHostSettings _settings;
         Credentials _credentials;
         HostStartMode _startMode;
         bool _sudo;
 
-        public InstallBuilder(HostEnvironment environment, HostSettings settings)
+        /// <summary>
+        /// 创建安装生成器实例
+        /// </summary>
+        /// <param name="environment"></param>
+        /// <param name="settings"></param>
+        public InstallBuilder(IHostEnvironment environment, IHostSettings settings)
         {
-            _preActions = new List<Action<InstallHostSettings>>();
-            _postActions = new List<Action<InstallHostSettings>>();
-            _preRollbackActions = new List<Action<InstallHostSettings>>();
-            _postRollbackActions = new List<Action<InstallHostSettings>>();
+            _preActions = new List<Action<IInstallHostSettings>>();
+            _postActions = new List<Action<IInstallHostSettings>>();
+            _preRollbackActions = new List<Action<IInstallHostSettings>>();
+            _postRollbackActions = new List<Action<IInstallHostSettings>>();
             _dependencies = new List<string>();
             _startMode = HostStartMode.Automatic;
             _credentials = new Credentials("", "", ServiceAccount.LocalSystem);
@@ -47,24 +55,35 @@ namespace Topshelf.Builders
             _settings = settings;
         }
 
-        public HostEnvironment Environment
+        /// <summary>
+        /// 环境
+        /// </summary>
+        public IHostEnvironment Environment
         {
             get { return _environment; }
         }
 
-        public HostSettings Settings
+        /// <summary>
+        /// 主机设置
+        /// </summary>
+        public IHostSettings Settings
         {
             get { return _settings; }
         }
 
-        public Host Build(ServiceBuilder serviceBuilder)
+        /// <summary>
+        /// 构建主机
+        /// </summary>
+        /// <param name="serviceBuilder"></param>
+        /// <returns></returns>
+        public IHost Build(IServiceBuilder serviceBuilder)
         {
             return new InstallHost(_environment, _settings, _startMode, _dependencies.ToArray(), _credentials,
                 _preActions, _postActions, _preRollbackActions, _postRollbackActions, _sudo);
         }
 
         public void Match<T>(Action<T> callback)
-            where T : class, HostBuilder
+            where T : class, IHostBuilder
         {
             if (callback == null)
                 throw new ArgumentNullException("callback");
@@ -86,30 +105,40 @@ namespace Topshelf.Builders
             _sudo = true;
         }
 
+        /// <summary>
+        /// 设置主机启动模式
+        /// </summary>
+        /// <param name="startMode"></param>
         public void SetStartMode(HostStartMode startMode)
         {
             _startMode = startMode;
         }
 
-        public void BeforeInstall(Action<InstallHostSettings> callback)
+        #region 添加主机事件监听
+        /// <summary>
+        /// 添加主机安装前监听
+        /// </summary>
+        /// <param name="callback"></param>
+        public void BeforeInstall(Action<IInstallHostSettings> callback)
         {
             _preActions.Add(callback);
         }
 
-        public void AfterInstall(Action<InstallHostSettings> callback)
+        public void AfterInstall(Action<IInstallHostSettings> callback)
         {
             _postActions.Add(callback);
         }
 
-        public void BeforeRollback(Action<InstallHostSettings> callback)
+        public void BeforeRollback(Action<IInstallHostSettings> callback)
         {
             _preRollbackActions.Add(callback);
         }
 
-        public void AfterRollback(Action<InstallHostSettings> callback)
+        public void AfterRollback(Action<IInstallHostSettings> callback)
         {
             _postRollbackActions.Add(callback);
         }
+        #endregion
 
         public void AddDependency(string name)
         {

@@ -27,16 +27,19 @@ namespace Topshelf.HostConfigurators
     /// 主机配置器的具体实现类。
     /// </summary>
     public class HostConfiguratorImpl :
-        HostConfigurator,
-        Configurator
+        IHostConfigurator,
+        IConfigurator
     {
-        readonly IList<CommandLineConfigurator> _commandLineOptionConfigurators;
-        readonly IList<HostBuilderConfigurator> _configurators;
+        readonly IList<ICommandLineConfigurator> _commandLineOptionConfigurators;
+        readonly IList<IHostBuilderConfigurator> _configurators;
+        /// <summary>
+        /// 主机设置
+        /// </summary>
         readonly WindowsHostSettings _settings;
         bool _commandLineApplied;
-        EnvironmentBuilderFactory _environmentBuilderFactory;
-        HostBuilderFactory _hostBuilderFactory;
-        ServiceBuilderFactory _serviceBuilderFactory;
+        EnvironmentBuilderFactoryDelegate _environmentBuilderFactory;
+        HostBuilderFactoryDelegate _hostBuilderFactory;
+        ServiceBuilderFactoryDelegate _serviceBuilderFactory;
 
         /// <summary>
         /// 返回主机配置具体实现的实例
@@ -44,8 +47,8 @@ namespace Topshelf.HostConfigurators
         /// </summary>
         public HostConfiguratorImpl()
         {
-            _configurators = new List<HostBuilderConfigurator>();
-            _commandLineOptionConfigurators = new List<CommandLineConfigurator>();
+            _configurators = new List<IHostBuilderConfigurator>();
+            _commandLineOptionConfigurators = new List<ICommandLineConfigurator>();
             _settings = new WindowsHostSettings();
 
             _environmentBuilderFactory = DefaultEnvironmentBuilderFactory;
@@ -56,7 +59,7 @@ namespace Topshelf.HostConfigurators
         /// 验证
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<ValidateResult> Validate()
+        public IEnumerable<IValidateResult> Validate()
         {
             if (_hostBuilderFactory == null)
                 yield return this.Failure("HostBuilderFactory", "must not be null");
@@ -79,7 +82,7 @@ namespace Topshelf.HostConfigurators
                     yield return this.Failure("Name", "must not contain whitespace, '/', or '\\' characters");
             }
 
-            foreach (ValidateResult result in _configurators.SelectMany(x => x.Validate()))
+            foreach (IValidateResult result in _configurators.SelectMany(x => x.Validate()))
                 yield return result;
 
             yield return this.Success("Name", _settings.Name);
@@ -149,43 +152,62 @@ namespace Topshelf.HostConfigurators
             _settings.CanSessionChanged = true;
         }
 
-        public void UseHostBuilder(HostBuilderFactory hostBuilderFactory)
+        public void UseHostBuilder(HostBuilderFactoryDelegate hostBuilderFactory)
         {
             _hostBuilderFactory = hostBuilderFactory;
         }
 
-        public void UseServiceBuilder(ServiceBuilderFactory serviceBuilderFactory)
+        public void UseServiceBuilder(ServiceBuilderFactoryDelegate serviceBuilderFactory)
         {
             _serviceBuilderFactory = serviceBuilderFactory;
         }
 
-        public void UseEnvironmentBuilder(EnvironmentBuilderFactory environmentBuilderFactory)
+        public void UseEnvironmentBuilder(EnvironmentBuilderFactoryDelegate environmentBuilderFactory)
         {
             _environmentBuilderFactory = environmentBuilderFactory;
         }
 
-        public void AddConfigurator(HostBuilderConfigurator configurator)
+        /// <summary>
+        /// 添加主机生成配置
+        /// </summary>
+        /// <param name="configurator"></param>
+        public void AddConfigurator(IHostBuilderConfigurator configurator)
         {
             _configurators.Add(configurator);
         }
 
+        #region ApplyCommandLine
+        /// <summary>
+        /// 应用命令行
+        /// </summary>
         public void ApplyCommandLine()
         {
             if (_commandLineApplied)
                 return;
 
-            IEnumerable<Option> options = CommandLine.Parse<Option>(ConfigureCommandLineParser);
+            IEnumerable<IOption> options = CommandLine.Parse<IOption>(ConfigureCommandLineParser);
             ApplyCommandLineOptions(options);
         }
+        #endregion
 
+        /// <summary>
+        /// 解析指定命令行中的命令行选项，并将其应用于主机配置程序。
+        /// </summary>
+        /// <param name="commandLine"></param>
         public void ApplyCommandLine(string commandLine)
         {
-            IEnumerable<Option> options = CommandLine.Parse<Option>(ConfigureCommandLineParser, commandLine);
+            IEnumerable<IOption> options = CommandLine.Parse<IOption>(ConfigureCommandLineParser, commandLine);
             ApplyCommandLineOptions(options);
 
+            //设置允许命令行执行
             _commandLineApplied = true;
         }
 
+        /// <summary>
+        /// 添加一个命令行开关
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="callback"></param>
         public void AddCommandLineSwitch(string name, Action<bool> callback)
         {
             var configurator = new CommandLineSwitchConfigurator(name, callback);
@@ -205,49 +227,63 @@ namespace Topshelf.HostConfigurators
             _settings.ExceptionCallback = callback;
         }
 
-        public Host CreateHost()
+        /// <summary>
+        /// 创建并返回主机实例
+        /// </summary>
+        /// <returns></returns>
+        public IHost CreateHost()
         {
             Type type = typeof(HostFactory);
             HostLogger.Get<HostConfiguratorImpl>()
                       .InfoFormat("{0} v{1}, .NET Framework v{2}", type.Namespace, type.Assembly.GetName().Version,
                           Environment.Version);
 
-            EnvironmentBuilder environmentBuilder = _environmentBuilderFactory(this);
+            IEnvironmentBuilder environmentBuilder = _environmentBuilderFactory(this);
 
-            HostEnvironment environment = environmentBuilder.Build();
+            //主机环境
+            IHostEnvironment environment = environmentBuilder.Build();
 
-            ServiceBuilder serviceBuilder = _serviceBuilderFactory(_settings);
+            IServiceBuilder serviceBuilder = _serviceBuilderFactory(_settings);
 
-            HostBuilder builder = _hostBuilderFactory(environment, _settings);
+            IHostBuilder builder = _hostBuilderFactory(environment, _settings);
 
-            foreach (HostBuilderConfigurator configurator in _configurators)
+            foreach (IHostBuilderConfigurator configurator in _configurators)
                 builder = configurator.Configure(builder);
 
             return builder.Build(serviceBuilder);
         }
 
-        void ApplyCommandLineOptions(IEnumerable<Option> options)
+        void ApplyCommandLineOptions(IEnumerable<IOption> options)
         {
-            foreach (Option option in options)
+            foreach (IOption option in options)
                 option.ApplyTo(this);
         }
 
-        void ConfigureCommandLineParser(ICommandLineElementParser<Option> parser)
+        /// <summary>
+        /// 配置命令行元素解析器
+        /// </summary>
+        /// <param name="parser"></param>
+        void ConfigureCommandLineParser(ICommandLineElementParser<IOption> parser)
         {
             CommandLineParserOptions.AddTopshelfOptions(parser);
 
-            foreach (CommandLineConfigurator optionConfigurator in _commandLineOptionConfigurators)
+            foreach (ICommandLineConfigurator optionConfigurator in _commandLineOptionConfigurators)
                 optionConfigurator.Configure(parser);
 
             CommandLineParserOptions.AddUnknownOptions(parser);
         }
 
-        static HostBuilder DefaultHostBuilderFactory(HostEnvironment environment, HostSettings settings)
+        static IHostBuilder DefaultHostBuilderFactory(IHostEnvironment environment, IHostSettings settings)
         {
             return new RunBuilder(environment, settings);
         }
 
-        static EnvironmentBuilder DefaultEnvironmentBuilderFactory(HostConfigurator configurator)
+        /// <summary>
+        /// 默认的环境生成工厂
+        /// </summary>
+        /// <param name="configurator"></param>
+        /// <returns></returns>
+        static IEnvironmentBuilder DefaultEnvironmentBuilderFactory(IHostConfigurator configurator)
         {
             return new WindowsHostEnvironmentBuilder(configurator);
         }

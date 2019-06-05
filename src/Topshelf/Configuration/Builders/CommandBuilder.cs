@@ -18,36 +18,36 @@ namespace Topshelf.Builders
 
 
     public class CommandBuilder :
-        HostBuilder
+        IHostBuilder
     {
         readonly int _command;
-        readonly HostEnvironment _environment;
-        readonly HostSettings _settings;
+        readonly IHostEnvironment _environment;
+        readonly IHostSettings _settings;
 
-        public CommandBuilder(HostBuilder builder, int command)
+        public CommandBuilder(IHostBuilder builder, int command)
         {
             _command = command;
             _settings = builder.Settings;
             _environment = builder.Environment;
         }
 
-        public HostEnvironment Environment
+        public IHostEnvironment Environment
         {
             get { return _environment; }
         }
 
-        public HostSettings Settings
+        public IHostSettings Settings
         {
             get { return _settings; }
         }
 
-        public Host Build(ServiceBuilder serviceBuilder)
+        public IHost Build(IServiceBuilder serviceBuilder)
         {
             return new CommandHost(_environment, _settings, _command);
         }
 
         public void Match<T>(Action<T> callback)
-            where T : class, HostBuilder
+            where T : class, IHostBuilder
         {
             if (callback == null)
                 throw new ArgumentNullException(nameof(callback));

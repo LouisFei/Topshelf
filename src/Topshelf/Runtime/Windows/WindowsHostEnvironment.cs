@@ -1,4 +1,4 @@
-// Copyright 2007-2012 Chris Patterson, Dru Sellers, Travis Smith, et. al.
+﻿// Copyright 2007-2012 Chris Patterson, Dru Sellers, Travis Smith, et. al.
 //  
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use 
 // this file except in compliance with the License. You may obtain a copy of the 
@@ -24,17 +24,29 @@ namespace Topshelf.Runtime.Windows
     using Logging;
     using HostConfigurators;
 
+    /// <summary>
+    /// Windows主机环境
+    /// </summary>
     public class WindowsHostEnvironment :
-        HostEnvironment
+        IHostEnvironment
     {
-        readonly LogWriter _log = HostLogger.Get(typeof(WindowsHostEnvironment));
-        private HostConfigurator _hostConfigurator;
+        readonly LogWriter _log = HostLogger.Get(typeof(WindowsHostEnvironment)); //日志
+        private IHostConfigurator _hostConfigurator; //主机配置器
 
-        public WindowsHostEnvironment(HostConfigurator configurator)
+        /// <summary>
+        /// 创建Windows主机环境
+        /// </summary>
+        /// <param name="configurator"></param>
+        public WindowsHostEnvironment(IHostConfigurator configurator)
         {
             _hostConfigurator = configurator;
         }
 
+        /// <summary>
+        /// 确定是否安装了服务
+        /// </summary>
+        /// <param name="serviceName"></param>
+        /// <returns></returns>
         public bool IsServiceInstalled(string serviceName)
         {
             if (Type.GetType("Mono.Runtime") != null)
@@ -45,14 +57,25 @@ namespace Topshelf.Runtime.Windows
             return IsServiceListed(serviceName);
         }
 
+        /// <summary>
+        /// 确定服务是否停止（未运行）
+        /// </summary>
+        /// <param name="serviceName"></param>
+        /// <returns></returns>
         public bool IsServiceStopped(string serviceName)
         {
-            using (var sc = new ServiceController(serviceName))
+            using (var sc = new ServiceController(serviceName)) //Windows 服务
             {
                 return sc.Status == ServiceControllerStatus.Stopped;
             }
         }
 
+        #region 启动服务 StartService
+        /// <summary>
+        /// 启动服务
+        /// </summary>
+        /// <param name="serviceName">服务的名称</param>
+        /// <param name="startTimeOut">指定服务在到达启动状态前需要等待的时间量。</param>
         public void StartService(string serviceName, TimeSpan startTimeOut)
         {
             using (var sc = new ServiceController(serviceName))
@@ -81,7 +104,14 @@ namespace Topshelf.Runtime.Windows
                 }
             }
         }
+        #endregion
 
+        #region 停止服务 StopService
+        /// <summary>
+        /// 停止服务 StopService
+        /// </summary>
+        /// <param name="serviceName">服务名称</param>
+        /// <param name="stopTimeOut">指定服务在到达停止状态前需要等待的时间量</param>
         public void StopService(string serviceName, TimeSpan stopTimeOut)
         {
             using (var sc = new ServiceController(serviceName))
@@ -110,6 +140,7 @@ namespace Topshelf.Runtime.Windows
                 }
             }
         }
+        #endregion
 
         public string CommandLine
         {
@@ -185,7 +216,7 @@ namespace Topshelf.Runtime.Windows
             return false;
         }
 
-        public Host CreateServiceHost(HostSettings settings, ServiceHandle serviceHandle)
+        public IHost CreateServiceHost(IHostSettings settings, IServiceHandle serviceHandle)
         {
             return new WindowsServiceHost(this, settings, serviceHandle, this._hostConfigurator);
         }
@@ -206,7 +237,7 @@ namespace Topshelf.Runtime.Windows
             }
         }
 
-        public void InstallService(InstallHostSettings settings, Action<InstallHostSettings> beforeInstall, Action afterInstall, Action beforeRollback, Action afterRollback)
+        public void InstallService(IInstallHostSettings settings, Action<IInstallHostSettings> beforeInstall, Action afterInstall, Action beforeRollback, Action afterRollback)
         {
             using (var installer = new HostServiceInstaller(settings))
             {
@@ -260,7 +291,7 @@ namespace Topshelf.Runtime.Windows
             }
         }
 
-        public void UninstallService(HostSettings settings, Action beforeUninstall, Action afterUninstall)
+        public void UninstallService(IHostSettings settings, Action beforeUninstall, Action afterUninstall)
         {
             using (var installer = new HostServiceInstaller(settings))
             {

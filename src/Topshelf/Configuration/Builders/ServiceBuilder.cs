@@ -14,8 +14,16 @@ namespace Topshelf.Builders
 {
     using Runtime;
 
-    public interface ServiceBuilder
+    /// <summary>
+    /// 服务生成器
+    /// </summary>
+    public interface IServiceBuilder
     {
-        ServiceHandle Build(HostSettings settings);
+        /// <summary>
+        /// 生成/构建服务
+        /// </summary>
+        /// <param name="settings">主机（宿主）设置</param>
+        /// <returns></returns>
+        IServiceHandle Build(IHostSettings settings);
     }
 }

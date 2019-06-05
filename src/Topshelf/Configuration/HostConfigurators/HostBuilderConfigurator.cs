@@ -16,12 +16,17 @@ namespace Topshelf.HostConfigurators
     using Configurators;
 
     /// <summary>
-    /// Can configure/replace the input HostBuilder, returning the original
-    /// or a new HostBuilder
+    /// Can configure/replace the input HostBuilder, returning the original or a new HostBuilder
+    /// 主机生成配置器
     /// </summary>
-    public interface HostBuilderConfigurator :
-        Configurator
+    public interface IHostBuilderConfigurator :
+        IConfigurator
     {
-        HostBuilder Configure(HostBuilder builder);
+        /// <summary>
+        /// 配置主机生成器
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <returns></returns>
+        IHostBuilder Configure(IHostBuilder builder);
     }
 }

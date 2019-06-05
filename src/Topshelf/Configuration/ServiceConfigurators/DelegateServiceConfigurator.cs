@@ -22,27 +22,27 @@ namespace Topshelf.ServiceConfigurators
     public class DelegateServiceConfigurator<T> :
         ServiceConfiguratorBase,
         ServiceConfigurator<T>,
-        Configurator
+        IConfigurator
         where T : class
     {
-        Func<T, HostControl, bool> _continue;
+        Func<T, IHostControl, bool> _continue;
         ServiceFactory<T> _factory;
-        Func<T, HostControl, bool> _pause;
+        Func<T, IHostControl, bool> _pause;
 
 
         bool _pauseConfigured;
         bool _sessionChangeConfigured;
         bool _powerEventConfigured;
-        Action<T, HostControl, SessionChangedArguments> _sessionChanged;
-        Func<T, HostControl, PowerEventArguments, bool> _powerEvent;
-        Action<T, HostControl> _shutdown;
+        Action<T, IHostControl, ISessionChangedArguments> _sessionChanged;
+        Func<T, IHostControl, IPowerEventArguments, bool> _powerEvent;
+        Action<T, IHostControl> _shutdown;
         bool _shutdownConfigured;
-        Func<T, HostControl, bool> _start;
-        Func<T, HostControl, bool> _stop;
+        Func<T, IHostControl, bool> _start;
+        Func<T, IHostControl, bool> _stop;
         bool _customCommandReceivedConfigured;
-        Action<T, HostControl, int> _customCommandReceived;
+        Action<T, IHostControl, int> _customCommandReceived;
 
-        public IEnumerable<ValidateResult> Validate()
+        public IEnumerable<IValidateResult> Validate()
         {
             if (_factory == null)
                 yield return this.Failure("Factory", "must not be null");
@@ -70,53 +70,53 @@ namespace Topshelf.ServiceConfigurators
             _factory = serviceFactory;
         }
 
-        public void WhenStarted(Func<T, HostControl, bool> start)
+        public void WhenStarted(Func<T, IHostControl, bool> start)
         {
             _start = start;
         }
 
-        public void WhenStopped(Func<T, HostControl, bool> stop)
+        public void WhenStopped(Func<T, IHostControl, bool> stop)
         {
             _stop = stop;
         }
 
-        public void WhenPaused(Func<T, HostControl, bool> pause)
+        public void WhenPaused(Func<T, IHostControl, bool> pause)
         {
             _pauseConfigured = true;
             _pause = pause;
         }
 
-        public void WhenContinued(Func<T, HostControl, bool> @continue)
+        public void WhenContinued(Func<T, IHostControl, bool> @continue)
         {
             _pauseConfigured = true;
             _continue = @continue;
         }
 
-        public void WhenShutdown(Action<T, HostControl> shutdown)
+        public void WhenShutdown(Action<T, IHostControl> shutdown)
         {
             _shutdownConfigured = true;
             _shutdown = shutdown;
         }
 
-        public void WhenSessionChanged(Action<T, HostControl, SessionChangedArguments> sessionChanged)
+        public void WhenSessionChanged(Action<T, IHostControl, ISessionChangedArguments> sessionChanged)
         {
             _sessionChangeConfigured = true;
             _sessionChanged = sessionChanged;
         }
 
-        public void WhenPowerEvent(Func<T, HostControl, PowerEventArguments, bool> powerEvent)
+        public void WhenPowerEvent(Func<T, IHostControl, IPowerEventArguments, bool> powerEvent)
         {
             _powerEventConfigured = true;
             _powerEvent = powerEvent;
         }
 
-        public void WhenCustomCommandReceived(Action<T, HostControl, int> customCommandReceived)
+        public void WhenCustomCommandReceived(Action<T, IHostControl, int> customCommandReceived)
         {
             _customCommandReceivedConfigured = true;
             _customCommandReceived = customCommandReceived;
         }
 
-        public ServiceBuilder Build()
+        public IServiceBuilder Build()
         {
             var serviceBuilder = new DelegateServiceBuilder<T>(_factory, _start, _stop, _pause, _continue, _shutdown,
                 _sessionChanged, _powerEvent, _customCommandReceived, ServiceEvents);

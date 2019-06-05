@@ -15,7 +15,7 @@ namespace Topshelf.Options
     using HostConfigurators;
 
     public class ServiceAccountOption :
-        Option
+        IOption
     {
         readonly string _password;
         readonly string _username;
@@ -26,7 +26,7 @@ namespace Topshelf.Options
             _password = password;
         }
 
-        public void ApplyTo(HostConfigurator configurator)
+        public void ApplyTo(IHostConfigurator configurator)
         {
             configurator.RunAs(_username, _password);
         }

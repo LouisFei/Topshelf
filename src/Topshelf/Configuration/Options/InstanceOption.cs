@@ -16,7 +16,7 @@ namespace Topshelf.Options
     using HostConfigurators;
 
     public class InstanceOption :
-        Option
+        IOption
     {
         readonly string _instanceName;
 
@@ -25,7 +25,7 @@ namespace Topshelf.Options
             _instanceName = instanceName;
         }
 
-        public void ApplyTo(HostConfigurator configurator)
+        public void ApplyTo(IHostConfigurator configurator)
         {
             if (configurator == null)
                 throw new ArgumentNullException("configurator");

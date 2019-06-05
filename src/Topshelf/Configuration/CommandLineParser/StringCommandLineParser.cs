@@ -15,9 +15,15 @@ namespace Topshelf.CommandLineParser
     using System;
     using System.Linq;
 
+    /// <summary>
+    /// ×Ö·û´®ÃüÁîĞĞ½âÎöÆ÷
+    /// </summary>
     class StringCommandLineParser :
         AbstractParser<string>
     {
+        /// <summary>
+        /// ´´½¨×Ö·û´®ÃüÁîĞĞ½âÎöÆ÷ÊµÀı
+        /// </summary>
         public StringCommandLineParser()
         {
             Whitespace = Rep(Char(' ').Or(Char('\t').Or(Char('\n')).Or(Char('\r'))));
@@ -102,24 +108,25 @@ namespace Topshelf.CommandLineParser
         }
 
 
-        Parser<string, char[]> Whitespace { get; set; }
-        Parser<string, char[]> NewLine { get; set; }
+        ParserDelegate<string, char[]> Whitespace { get; set; }
+        ParserDelegate<string, char[]> NewLine { get; set; }
 
-        Parser<string, char> EscChar { get; set; }
+        ParserDelegate<string, char> EscChar { get; set; }
 
-        Parser<string, string> Id { get; set; }
-        Parser<string, string> Key { get; set; }
-        Parser<string, string> Value { get; set; }
-        Parser<string, string> ValueInQuotes { get; set; }
+        ParserDelegate<string, string> Id { get; set; }
+        ParserDelegate<string, string> Key { get; set; }
+        ParserDelegate<string, string> Value { get; set; }
+        ParserDelegate<string, string> ValueInQuotes { get; set; }
 
-        Parser<string, ICommandLineElement> Definition { get; set; }
-        Parser<string, ICommandLineElement> EmptyDefinition { get; set; }
-        Parser<string, ICommandLineElement> Argument { get; set; }
-        Parser<string, ICommandLineElement> Token { get; set; }
-        Parser<string, ICommandLineElement> Switch { get; set; }
-        public Parser<string, ICommandLineElement> All { get; private set; }
+        ParserDelegate<string, ICommandLineElement> Definition { get; set; }
+        ParserDelegate<string, ICommandLineElement> EmptyDefinition { get; set; }
+        ParserDelegate<string, ICommandLineElement> Argument { get; set; }
+        ParserDelegate<string, ICommandLineElement> Token { get; set; }
+        ParserDelegate<string, ICommandLineElement> Switch { get; set; }
 
-        Parser<string, char> AnyChar
+        public ParserDelegate<string, ICommandLineElement> All { get; private set; }
+
+        ParserDelegate<string, char> AnyChar
         {
             get
             {
@@ -129,12 +136,12 @@ namespace Topshelf.CommandLineParser
             }
         }
 
-        Parser<string, char> Char(char ch)
+        ParserDelegate<string, char> Char(char ch)
         {
             return from c in AnyChar where c == ch select c;
         }
 
-        Parser<string, char> Char(Predicate<char> pred)
+        ParserDelegate<string, char> Char(Predicate<char> pred)
         {
             return from c in AnyChar where pred(c) select c;
         }

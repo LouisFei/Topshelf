@@ -19,7 +19,7 @@ namespace Topshelf.Hosts
     ///   Displays the Topshelf command line reference
     /// </summary>
     public class HelpHost :
-        Host
+        IHost
     {
         readonly string _prefixText;
 

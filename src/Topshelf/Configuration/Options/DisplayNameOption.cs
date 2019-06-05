@@ -14,7 +14,7 @@ namespace Topshelf.Options
 {
     using HostConfigurators;
 
-    public class DisplayNameOption : Option
+    public class DisplayNameOption : IOption
     {
         string _name;
 
@@ -23,7 +23,7 @@ namespace Topshelf.Options
             _name = name;
         }
 
-        public void ApplyTo(HostConfigurator configurator)
+        public void ApplyTo(IHostConfigurator configurator)
         {
             configurator.SetDisplayName(_name);
         }

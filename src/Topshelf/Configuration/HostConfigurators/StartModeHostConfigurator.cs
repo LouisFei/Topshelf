@@ -20,7 +20,7 @@ namespace Topshelf.HostConfigurators
 
 
     public class StartModeHostConfigurator :
-        HostBuilderConfigurator
+        IHostBuilderConfigurator
     {
         public StartModeHostConfigurator(HostStartMode startMode)
         {
@@ -29,7 +29,7 @@ namespace Topshelf.HostConfigurators
 
         public HostStartMode StartMode { get; private set; }
 
-        public IEnumerable<ValidateResult> Validate()
+        public IEnumerable<IValidateResult> Validate()
         {
 #if NET35
             if (StartMode == HostStartMode.AutomaticDelayed)
@@ -38,7 +38,7 @@ namespace Topshelf.HostConfigurators
             yield break;
         }
 
-        public HostBuilder Configure(HostBuilder builder)
+        public IHostBuilder Configure(IHostBuilder builder)
         {
             if (builder == null)
                 throw new ArgumentNullException("builder");

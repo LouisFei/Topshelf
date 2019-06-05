@@ -22,17 +22,17 @@ namespace Topshelf.HostConfigurators
 
     public class ServiceRecoveryHostConfigurator :
         ServiceRecoveryConfigurator,
-        HostBuilderConfigurator
+        IHostBuilderConfigurator
     {
         ServiceRecoveryOptions _options;
-        HostSettings _settings;
+        IHostSettings _settings;
 
         ServiceRecoveryOptions Options
         {
             get { return _options ?? (_options = new ServiceRecoveryOptions()); }
         }
 
-        public IEnumerable<ValidateResult> Validate()
+        public IEnumerable<IValidateResult> Validate()
         {
             if (_options == null)
                 yield return this.Failure("No service recovery options were specified");
@@ -43,7 +43,7 @@ namespace Topshelf.HostConfigurators
             }
         }
 
-        public HostBuilder Configure(HostBuilder builder)
+        public IHostBuilder Configure(IHostBuilder builder)
         {
             if (builder == null)
                 throw new ArgumentNullException("builder");
@@ -88,7 +88,7 @@ namespace Topshelf.HostConfigurators
             Options.RecoverOnCrashOnly = true;
         }
 
-        void ConfigureServiceRecovery(InstallHostSettings installSettings)
+        void ConfigureServiceRecovery(IInstallHostSettings installSettings)
         {
             var controller = new WindowsServiceRecoveryController();
             controller.SetServiceRecoveryOptions(_settings, _options);

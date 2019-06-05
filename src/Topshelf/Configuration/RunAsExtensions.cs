@@ -18,7 +18,7 @@ namespace Topshelf
 
     public static class RunAsExtensions
     {
-        public static HostConfigurator RunAs(this HostConfigurator configurator, string username, string password)
+        public static IHostConfigurator RunAs(this IHostConfigurator configurator, string username, string password)
         {
             if (configurator == null)
                 throw new ArgumentNullException("configurator");
@@ -30,7 +30,7 @@ namespace Topshelf
             return configurator;
         }
 
-        public static HostConfigurator RunAsPrompt(this HostConfigurator configurator)
+        public static IHostConfigurator RunAsPrompt(this IHostConfigurator configurator)
         {
             if (configurator == null)
                 throw new ArgumentNullException("configurator");
@@ -42,7 +42,7 @@ namespace Topshelf
             return configurator;
         }
 
-        public static HostConfigurator RunAsNetworkService(this HostConfigurator configurator)
+        public static IHostConfigurator RunAsNetworkService(this IHostConfigurator configurator)
         {
             if (configurator == null)
                 throw new ArgumentNullException("configurator");
@@ -54,7 +54,7 @@ namespace Topshelf
             return configurator;
         }
 
-        public static HostConfigurator RunAsLocalSystem(this HostConfigurator configurator)
+        public static IHostConfigurator RunAsLocalSystem(this IHostConfigurator configurator)
         {
             if (configurator == null)
                 throw new ArgumentNullException("configurator");
@@ -66,7 +66,7 @@ namespace Topshelf
             return configurator;
         }
 
-        public static HostConfigurator RunAsLocalService(this HostConfigurator configurator)
+        public static IHostConfigurator RunAsLocalService(this IHostConfigurator configurator)
         {
             if (configurator == null)
                 throw new ArgumentNullException("configurator");

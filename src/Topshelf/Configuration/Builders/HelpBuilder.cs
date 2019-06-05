@@ -17,30 +17,30 @@ namespace Topshelf.Builders
     using Runtime;
 
     public class HelpBuilder :
-        HostBuilder
+        IHostBuilder
     {
-        readonly HostEnvironment _environment;
-        readonly HostSettings _settings;
+        readonly IHostEnvironment _environment;
+        readonly IHostSettings _settings;
         string _prefixText;
         bool _systemHelpTextOnly;
 
-        public HelpBuilder(HostEnvironment environment, HostSettings settings)
+        public HelpBuilder(IHostEnvironment environment, IHostSettings settings)
         {
             _settings = settings;
             _environment = environment;
         }
 
-        public HostEnvironment Environment
+        public IHostEnvironment Environment
         {
             get { return _environment; }
         }
 
-        public HostSettings Settings
+        public IHostSettings Settings
         {
             get { return _settings; }
         }
 
-        public Host Build(ServiceBuilder serviceBuilder)
+        public IHost Build(IServiceBuilder serviceBuilder)
         {
             string prefixText = _systemHelpTextOnly
                                     ? null
@@ -50,7 +50,7 @@ namespace Topshelf.Builders
         }
 
         public void Match<T>(Action<T> callback)
-            where T : class, HostBuilder
+            where T : class, IHostBuilder
         {
             if (callback == null)
                 throw new ArgumentNullException("callback");

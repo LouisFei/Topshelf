@@ -19,7 +19,7 @@ namespace Topshelf.HostConfigurators
 
 
     public class UninstallHostConfiguratorAction :
-        HostBuilderConfigurator
+        IHostBuilderConfigurator
     {
         public UninstallHostConfiguratorAction(string key, Action<UninstallBuilder> callback)
         {
@@ -30,7 +30,7 @@ namespace Topshelf.HostConfigurators
         public Action<UninstallBuilder> Callback { get; private set; }
         public string Key { get; private set; }
 
-        public HostBuilder Configure(HostBuilder builder)
+        public IHostBuilder Configure(IHostBuilder builder)
         {
             if (builder == null)
                 throw new ArgumentNullException("builder");
@@ -40,7 +40,7 @@ namespace Topshelf.HostConfigurators
             return builder;
         }
 
-        public IEnumerable<ValidateResult> Validate()
+        public IEnumerable<IValidateResult> Validate()
         {
             if (Callback == null)
                 yield return this.Failure(Key, "must not be null");

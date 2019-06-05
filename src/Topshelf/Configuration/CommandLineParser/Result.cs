@@ -12,8 +12,18 @@
 // specific language governing permissions and limitations under the License.
 namespace Topshelf.CommandLineParser
 {
+    /// <summary>
+    /// 处理结果的包装
+    /// </summary>
+    /// <typeparam name="TInput"></typeparam>
+    /// <typeparam name="TValue"></typeparam>
     class Result<TInput, TValue>
     {
+        /// <summary>
+        /// 创建一个结果的包装实例
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="rest"></param>
         public Result(TValue value, TInput rest)
         {
             Value = value;
@@ -21,6 +31,10 @@ namespace Topshelf.CommandLineParser
         }
 
         public TValue Value { get; private set; }
+
+        /// <summary>
+        /// 剩余部分
+        /// </summary>
         public TInput Rest { get; private set; }
     }
 }

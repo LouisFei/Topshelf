@@ -20,9 +20,10 @@ namespace Topshelf.HostConfigurators
 
     /// <summary>
     /// Adds a dependency to the InstallBuilder (ignored otherwise)
+    /// 向InstallBuilder添加依赖项(否则忽略)
     /// </summary>
     public class DependencyHostConfigurator :
-        HostBuilderConfigurator
+        IHostBuilderConfigurator
     {
         public DependencyHostConfigurator(string name)
         {
@@ -34,13 +35,13 @@ namespace Topshelf.HostConfigurators
 
         public string Name { get; private set; }
 
-        public IEnumerable<ValidateResult> Validate()
+        public IEnumerable<IValidateResult> Validate()
         {
             if (string.IsNullOrEmpty(Name))
                 yield return this.Failure("Dependency", "must not be null");
         }
 
-        public HostBuilder Configure(HostBuilder builder)
+        public IHostBuilder Configure(IHostBuilder builder)
         {
             if (builder == null)
                 throw new ArgumentNullException("builder");

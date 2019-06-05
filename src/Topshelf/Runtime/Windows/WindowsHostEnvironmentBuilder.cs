@@ -15,17 +15,28 @@ namespace Topshelf.Runtime.Windows
     using Builders;
     using HostConfigurators;
 
+    /// <summary>
+    /// Windows环境生成器
+    /// </summary>
     public class WindowsHostEnvironmentBuilder :
-        EnvironmentBuilder
+        IEnvironmentBuilder
     {
-        HostConfigurator _hostConfigurator;
+        IHostConfigurator _hostConfigurator;
 
-        public WindowsHostEnvironmentBuilder(HostConfigurator configurator)
+        /// <summary>
+        /// 创建Windows环境生成器
+        /// </summary>
+        /// <param name="configurator"></param>
+        public WindowsHostEnvironmentBuilder(IHostConfigurator configurator)
         {
             _hostConfigurator = configurator;
         }
 
-        public HostEnvironment Build()
+        /// <summary>
+        /// 构建主机环境
+        /// </summary>
+        /// <returns></returns>
+        public IHostEnvironment Build()
         {
             return new WindowsHostEnvironment(_hostConfigurator);
         }

@@ -17,7 +17,7 @@ namespace Topshelf
 
     public static class UninstallHostConfiguratorExtensions
     {
-        public static HostConfigurator BeforeUninstall(this HostConfigurator configurator, Action callback)
+        public static IHostConfigurator BeforeUninstall(this IHostConfigurator configurator, Action callback)
         {
             if (configurator == null)
                 throw new ArgumentNullException("configurator");
@@ -28,7 +28,7 @@ namespace Topshelf
             return configurator;
         }
 
-        public static HostConfigurator AfterUninstall(this HostConfigurator configurator, Action callback)
+        public static IHostConfigurator AfterUninstall(this IHostConfigurator configurator, Action callback)
         {
             if (configurator == null)
                 throw new ArgumentNullException("configurator");

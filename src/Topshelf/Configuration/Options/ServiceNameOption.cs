@@ -14,8 +14,11 @@ namespace Topshelf.Options
 {
     using HostConfigurators;
 
+    /// <summary>
+    /// 服务名称参数选项
+    /// </summary>
     public class ServiceNameOption :
-        Option
+        IOption
     {
         string _serviceName;
 
@@ -24,7 +27,7 @@ namespace Topshelf.Options
             _serviceName = name;
         }
 
-        public void ApplyTo(HostConfigurator configurator)
+        public void ApplyTo(IHostConfigurator configurator)
         {
             configurator.SetServiceName(_serviceName);
         }

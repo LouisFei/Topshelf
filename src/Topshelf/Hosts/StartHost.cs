@@ -17,21 +17,21 @@ namespace Topshelf.Hosts
     using Runtime;
 
     public class StartHost :
-        Host
+        IHost
     {
-        readonly HostEnvironment _environment;
+        readonly IHostEnvironment _environment;
         readonly LogWriter _log = HostLogger.Get<StartHost>();
-        readonly Host _parentHost;
-        HostSettings _settings;
+        readonly IHost _parentHost;
+        IHostSettings _settings;
 
-        public StartHost(HostEnvironment environment, HostSettings settings, Host parentHost)
+        public StartHost(IHostEnvironment environment, IHostSettings settings, IHost parentHost)
         {
             _environment = environment;
             _settings = settings;
             _parentHost = parentHost;
         }
 
-        public StartHost(HostEnvironment environment, HostSettings settings)
+        public StartHost(IHostEnvironment environment, IHostSettings settings)
             : this(environment, settings, null)
         {
         }

@@ -16,7 +16,7 @@ namespace Topshelf.Configurators
 
     [Serializable]
     public class ValidateResultImpl :
-        ValidateResult
+        IValidateResult
     {
         public ValidateResultImpl(ValidationResultDisposition disposition, string key, string value, string message)
         {

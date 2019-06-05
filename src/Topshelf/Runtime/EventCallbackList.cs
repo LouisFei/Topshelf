@@ -15,6 +15,10 @@ namespace Topshelf.Runtime
     using System;
     using System.Collections.Generic;
 
+    /// <summary>
+    /// 事件回调集合
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class EventCallbackList<T>
     {
         readonly IList<Action<T>> _callbacks;
@@ -29,6 +33,10 @@ namespace Topshelf.Runtime
             _callbacks.Add(callback);
         }
 
+        /// <summary>
+        /// 通知执行回调方法
+        /// </summary>
+        /// <param name="data"></param>
         public void Notify(T data)
         {
             foreach (var callback in _callbacks)

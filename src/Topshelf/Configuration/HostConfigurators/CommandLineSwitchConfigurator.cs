@@ -16,37 +16,57 @@ namespace Topshelf.HostConfigurators
     using CommandLineParser;
     using Options;
 
+    /// <summary>
+    /// 命令行开关配置
+    /// </summary>
     class CommandLineSwitchConfigurator :
-        CommandLineConfigurator
+        ICommandLineConfigurator
     {
         readonly Action<bool> _callback;
         readonly string _name;
 
+        /// <summary>
+        /// 创建命令行开关配置实例
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="callback"></param>
         public CommandLineSwitchConfigurator(string name, Action<bool> callback)
         {
             _name = name;
             _callback = callback;
         }
 
-        public void Configure(ICommandLineElementParser<Option> parser)
+        public void Configure(ICommandLineElementParser<IOption> parser)
         {
             parser.Add(from s in parser.Switch(_name)
-                       select (Option)new ServiceSwitchOption(s, _callback));
+                       select (IOption)new ServiceSwitchOption(s, _callback));
         }
 
+        /// <summary>
+        /// 服务开关参数
+        /// </summary>
         class ServiceSwitchOption :
-            Option
+            IOption
         {
             readonly Action<bool> _callback;
             readonly bool _value;
 
+            /// <summary>
+            /// 创建服务开关参数实例
+            /// </summary>
+            /// <param name="element"></param>
+            /// <param name="callback"></param>
             public ServiceSwitchOption(ISwitchElement element, Action<bool> callback)
             {
                 _callback = callback;
                 _value = element.Value;
             }
 
-            public void ApplyTo(HostConfigurator configurator)
+            /// <summary>
+            /// 应用服务开关参数
+            /// </summary>
+            /// <param name="configurator"></param>
+            public void ApplyTo(IHostConfigurator configurator)
             {
                 _callback(_value);
             }

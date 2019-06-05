@@ -1,4 +1,4 @@
-// Copyright 2007-2012 Chris Patterson, Dru Sellers, Travis Smith, et. al.
+﻿// Copyright 2007-2012 Chris Patterson, Dru Sellers, Travis Smith, et. al.
 //  
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use 
 // this file except in compliance with the License. You may obtain a copy of the 
@@ -15,8 +15,15 @@ namespace Topshelf.HostConfigurators
     using CommandLineParser;
     using Options;
 
-    interface CommandLineConfigurator
+    /// <summary>
+    /// 命令行配置
+    /// </summary>
+    interface ICommandLineConfigurator
     {
-        void Configure(ICommandLineElementParser<Option> parser);
+        /// <summary>
+        /// 配置
+        /// </summary>
+        /// <param name="parser"></param>
+        void Configure(ICommandLineElementParser<IOption> parser);
     }
 }

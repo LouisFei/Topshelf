@@ -16,25 +16,25 @@ namespace Topshelf.Builders
     using Runtime;
 
     public class DelegateServiceBuilder<T> :
-        ServiceBuilder
+        IServiceBuilder
         where T : class
     {
-        readonly Func<T, HostControl, bool> _continue;
-        readonly Func<T, HostControl, bool> _pause;
+        readonly Func<T, IHostControl, bool> _continue;
+        readonly Func<T, IHostControl, bool> _pause;
         readonly ServiceEvents _serviceEvents;
         readonly ServiceFactory<T> _serviceFactory;
-        readonly Action<T, HostControl> _shutdown;
-        readonly Func<T, HostControl, bool> _start;
-        readonly Func<T, HostControl, bool> _stop;
-        readonly Action<T, HostControl, SessionChangedArguments> _sessionChanged;
-        readonly Func<T, HostControl, PowerEventArguments, bool> _powerEvent;
-        readonly Action<T, HostControl, int> _customCommand;
+        readonly Action<T, IHostControl> _shutdown;
+        readonly Func<T, IHostControl, bool> _start;
+        readonly Func<T, IHostControl, bool> _stop;
+        readonly Action<T, IHostControl, ISessionChangedArguments> _sessionChanged;
+        readonly Func<T, IHostControl, IPowerEventArguments, bool> _powerEvent;
+        readonly Action<T, IHostControl, int> _customCommand;
 
-        public DelegateServiceBuilder(ServiceFactory<T> serviceFactory, Func<T, HostControl, bool> start,
-            Func<T, HostControl, bool> stop, Func<T, HostControl, bool> pause, Func<T, HostControl, bool> @continue,
-            Action<T, HostControl> shutdown, Action<T, HostControl, SessionChangedArguments> sessionChanged,
-            Func<T, HostControl, PowerEventArguments, bool> powerEvent,
-            Action<T, HostControl, int> customCommand, ServiceEvents serviceEvents)
+        public DelegateServiceBuilder(ServiceFactory<T> serviceFactory, Func<T, IHostControl, bool> start,
+            Func<T, IHostControl, bool> stop, Func<T, IHostControl, bool> pause, Func<T, IHostControl, bool> @continue,
+            Action<T, IHostControl> shutdown, Action<T, IHostControl, ISessionChangedArguments> sessionChanged,
+            Func<T, IHostControl, IPowerEventArguments, bool> powerEvent,
+            Action<T, IHostControl, int> customCommand, ServiceEvents serviceEvents)
         {
             _serviceFactory = serviceFactory;
             _start = start;
@@ -48,7 +48,7 @@ namespace Topshelf.Builders
             _serviceEvents = serviceEvents;
         }
 
-        public ServiceHandle Build(HostSettings settings)
+        public IServiceHandle Build(IHostSettings settings)
         {
             try
             {
@@ -63,23 +63,23 @@ namespace Topshelf.Builders
         }
 
         class DelegateServiceHandle :
-            ServiceHandle
+            IServiceHandle
         {
-            readonly Func<T, HostControl, bool> _continue;
-            readonly Func<T, HostControl, bool> _pause;
+            readonly Func<T, IHostControl, bool> _continue;
+            readonly Func<T, IHostControl, bool> _pause;
             readonly T _service;
             readonly ServiceEvents _serviceEvents;
-            readonly Action<T, HostControl> _shutdown;
-            readonly Func<T, HostControl, bool> _start;
-            readonly Func<T, HostControl, bool> _stop;
-            readonly Action<T, HostControl, SessionChangedArguments> _sessionChanged;
-            readonly Func<T, HostControl, PowerEventArguments, bool> _powerEvent;
-            readonly Action<T, HostControl, int> _customCommand;
+            readonly Action<T, IHostControl> _shutdown;
+            readonly Func<T, IHostControl, bool> _start;
+            readonly Func<T, IHostControl, bool> _stop;
+            readonly Action<T, IHostControl, ISessionChangedArguments> _sessionChanged;
+            readonly Func<T, IHostControl, IPowerEventArguments, bool> _powerEvent;
+            readonly Action<T, IHostControl, int> _customCommand;
 
-            public DelegateServiceHandle(T service, Func<T, HostControl, bool> start, Func<T, HostControl, bool> stop,
-                Func<T, HostControl, bool> pause, Func<T, HostControl, bool> @continue, Action<T, HostControl> shutdown,
-                Action<T, HostControl, SessionChangedArguments> sessionChanged, Func<T, HostControl, PowerEventArguments, bool> powerEvent,
-                Action<T, HostControl, int> customCommand, ServiceEvents serviceEvents)
+            public DelegateServiceHandle(T service, Func<T, IHostControl, bool> start, Func<T, IHostControl, bool> stop,
+                Func<T, IHostControl, bool> pause, Func<T, IHostControl, bool> @continue, Action<T, IHostControl> shutdown,
+                Action<T, IHostControl, ISessionChangedArguments> sessionChanged, Func<T, IHostControl, IPowerEventArguments, bool> powerEvent,
+                Action<T, IHostControl, int> customCommand, ServiceEvents serviceEvents)
             {
                 _service = service;
                 _start = start;
@@ -100,7 +100,7 @@ namespace Topshelf.Builders
                     disposable.Dispose();
             }
 
-            public bool Start(HostControl hostControl)
+            public bool Start(IHostControl hostControl)
             {
                 _serviceEvents.BeforeStart(hostControl);
 
@@ -112,17 +112,17 @@ namespace Topshelf.Builders
                 return started;
             }
 
-            public bool Pause(HostControl hostControl)
+            public bool Pause(IHostControl hostControl)
             {
                 return _pause != null && _pause(_service, hostControl);
             }
 
-            public bool Continue(HostControl hostControl)
+            public bool Continue(IHostControl hostControl)
             {
                 return _continue != null && _continue(_service, hostControl);
             }
 
-            public bool Stop(HostControl hostControl)
+            public bool Stop(IHostControl hostControl)
             {
                 _serviceEvents.BeforeStop(hostControl);
 
@@ -134,19 +134,19 @@ namespace Topshelf.Builders
                 return stopped;
             }
 
-            public void Shutdown(HostControl hostControl)
+            public void Shutdown(IHostControl hostControl)
             {
                 if(_shutdown != null)
                     _shutdown(_service, hostControl);
             }
 
-            public void SessionChanged(HostControl hostControl, SessionChangedArguments arguments)
+            public void SessionChanged(IHostControl hostControl, ISessionChangedArguments arguments)
             {
                 if (_sessionChanged != null)
                     _sessionChanged(_service, hostControl, arguments);
             }
 
-            public bool PowerEvent(HostControl hostControl, PowerEventArguments arguments)
+            public bool PowerEvent(IHostControl hostControl, IPowerEventArguments arguments)
             {
                 if (_powerEvent != null)
                     return _powerEvent(_service, hostControl, arguments);
@@ -154,7 +154,7 @@ namespace Topshelf.Builders
                 return false;
             }
 
-            public void CustomCommand(HostControl hostControl, int command)
+            public void CustomCommand(IHostControl hostControl, int command)
             {
                 if (_customCommand != null)
                     _customCommand(_service, hostControl, command);

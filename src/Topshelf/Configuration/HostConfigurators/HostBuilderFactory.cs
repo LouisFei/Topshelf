@@ -15,5 +15,5 @@ namespace Topshelf.HostConfigurators
     using Builders;
     using Runtime;
 
-    public delegate HostBuilder HostBuilderFactory(HostEnvironment environment, HostSettings settings);
+    public delegate IHostBuilder HostBuilderFactoryDelegate(IHostEnvironment environment, IHostSettings settings);
 }

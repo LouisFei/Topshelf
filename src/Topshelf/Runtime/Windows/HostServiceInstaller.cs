@@ -34,14 +34,14 @@ namespace Topshelf.Runtime.Windows
             }
         }
 
-        public HostServiceInstaller(InstallHostSettings settings)
+        public HostServiceInstaller(IInstallHostSettings settings)
         {
             _installer = CreateInstaller(settings);
 
             _transactedInstaller = CreateTransactedInstaller(_installer);
         }
 
-        public HostServiceInstaller(HostSettings settings)
+        public HostServiceInstaller(IHostSettings settings)
         {
             _installer = CreateInstaller(settings);
 
@@ -88,7 +88,7 @@ namespace Topshelf.Runtime.Windows
             _transactedInstaller.Uninstall(null);
         }
 
-        static Installer CreateInstaller(InstallHostSettings settings)
+        static Installer CreateInstaller(IInstallHostSettings settings)
         {
             var installers = new Installer[]
                 {
@@ -116,7 +116,7 @@ namespace Topshelf.Runtime.Windows
             }
         }
 
-        Installer CreateInstaller(HostSettings settings)
+        Installer CreateInstaller(IHostSettings settings)
         {
             var installers = new Installer[]
                 {
@@ -129,7 +129,7 @@ namespace Topshelf.Runtime.Windows
             return CreateHostInstaller(settings, installers);
         }
 
-        static Installer CreateHostInstaller(HostSettings settings, Installer[] installers)
+        static Installer CreateHostInstaller(IHostSettings settings, Installer[] installers)
         {
             string arguments = " ";
 
@@ -165,7 +165,7 @@ namespace Topshelf.Runtime.Windows
             return transactedInstaller;
         }
 
-        static ServiceInstaller ConfigureServiceInstaller(HostSettings settings, string[] dependencies,
+        static ServiceInstaller ConfigureServiceInstaller(IHostSettings settings, string[] dependencies,
             HostStartMode startMode)
         {
             var installer = new ServiceInstaller

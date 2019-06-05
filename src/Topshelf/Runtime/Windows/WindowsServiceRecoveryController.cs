@@ -22,7 +22,7 @@ namespace Topshelf.Runtime.Windows
     public class WindowsServiceRecoveryController
     {
         [SecurityPermission(SecurityAction.LinkDemand, UnmanagedCode = true)]
-        public void SetServiceRecoveryOptions(HostSettings settings, ServiceRecoveryOptions options)
+        public void SetServiceRecoveryOptions(IHostSettings settings, ServiceRecoveryOptions options)
         {
             SafeTokenHandle scmHandle = null;
             SafeTokenHandle serviceHandle = null;

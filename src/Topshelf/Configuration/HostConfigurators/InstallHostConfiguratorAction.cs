@@ -19,7 +19,7 @@ namespace Topshelf.HostConfigurators
 
 
     public class InstallHostConfiguratorAction :
-        HostBuilderConfigurator
+        IHostBuilderConfigurator
     {
         public InstallHostConfiguratorAction(string key, Action<InstallBuilder> callback)
         {
@@ -33,13 +33,13 @@ namespace Topshelf.HostConfigurators
         public Action<InstallBuilder> Callback { get; private set; }
         public string Key { get; private set; }
 
-        public IEnumerable<ValidateResult> Validate()
+        public IEnumerable<IValidateResult> Validate()
         {
             if (Callback == null)
                 yield return this.Failure(Key, "A null callback was specified");
         }
 
-        public HostBuilder Configure(HostBuilder builder)
+        public IHostBuilder Configure(IHostBuilder builder)
         {
             if (builder == null)
                 throw new ArgumentNullException("builder");

@@ -19,14 +19,14 @@ namespace Topshelf.Builders
 
 
     public class RunBuilder :
-        HostBuilder
+        IHostBuilder
     {
         static readonly LogWriter _log = HostLogger.Get<RunBuilder>();
 
-        readonly HostSettings _settings;
-        readonly HostEnvironment _environment;
+        readonly IHostSettings _settings;
+        readonly IHostEnvironment _environment;
 
-        public RunBuilder(HostEnvironment environment, HostSettings settings)
+        public RunBuilder(IHostEnvironment environment, IHostSettings settings)
         {
             if (settings == null)
                 throw new ArgumentNullException("settings");
@@ -35,25 +35,25 @@ namespace Topshelf.Builders
             _settings = settings;
         }
 
-        public HostEnvironment Environment
+        public IHostEnvironment Environment
         {
             get { return _environment; }
         }
 
-        public HostSettings Settings
+        public IHostSettings Settings
         {
             get { return _settings; }
         }
 
-        public virtual Host Build(ServiceBuilder serviceBuilder)
+        public virtual IHost Build(IServiceBuilder serviceBuilder)
         {
-            ServiceHandle serviceHandle = serviceBuilder.Build(_settings);
+            IServiceHandle serviceHandle = serviceBuilder.Build(_settings);
 
             return CreateHost(serviceHandle);
         }
 
         public void Match<T>(Action<T> callback)
-            where T : class, HostBuilder
+            where T : class, IHostBuilder
         {
             if (callback == null)
                 throw new ArgumentNullException("callback");
@@ -65,7 +65,7 @@ namespace Topshelf.Builders
             }
         }
 
-        Host CreateHost(ServiceHandle serviceHandle)
+        IHost CreateHost(IServiceHandle serviceHandle)
         {
             if (_environment.IsRunningAsAService)
             {

@@ -20,24 +20,43 @@ namespace Topshelf
     using Runtime;
     using ServiceConfigurators;
 
+    /// <summary>
+    /// 服务扩展方法
+    /// </summary>
     public static class ServiceExtensions
     {
-        public static HostConfigurator Service<TService>(this HostConfigurator configurator,
-            Func<HostSettings, TService> serviceFactory, Action<ServiceConfigurator> callback)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TService"></typeparam>
+        /// <param name="configurator">主机配置器</param>
+        /// <param name="serviceFactory">服务工厂</param>
+        /// <param name="callback">回调</param>
+        /// <returns></returns>
+        public static IHostConfigurator Service<TService>(this IHostConfigurator configurator,
+            Func<IHostSettings, TService> serviceFactory,
+            Action<ServiceConfigurator> callback)
             where TService : class, ServiceControl
         {
             if (configurator == null)
                 throw new ArgumentNullException("configurator");
 
-            ServiceBuilderFactory serviceBuilderFactory = CreateServiceBuilderFactory(serviceFactory, callback);
+            ServiceBuilderFactoryDelegate serviceBuilderFactory = CreateServiceBuilderFactory(serviceFactory, callback);
 
             configurator.UseServiceBuilder(serviceBuilderFactory);
 
             return configurator;
         }
 
-        public static ServiceBuilderFactory CreateServiceBuilderFactory<TService>(
-            Func<HostSettings, TService> serviceFactory,
+        /// <summary>
+        /// 创建服务生成器工厂
+        /// </summary>
+        /// <typeparam name="TService"></typeparam>
+        /// <param name="serviceFactory">服务工厂</param>
+        /// <param name="callback">回调</param>
+        /// <returns></returns>
+        public static ServiceBuilderFactoryDelegate CreateServiceBuilderFactory<TService>(
+            Func<IHostSettings, TService> serviceFactory,
             Action<ServiceConfigurator> callback)
             where TService : class, ServiceControl
         {
@@ -50,62 +69,64 @@ namespace Topshelf
 
             callback(serviceConfigurator);
 
-            ServiceBuilderFactory serviceBuilderFactory = x =>
+            ServiceBuilderFactoryDelegate serviceBuilderFactory = x =>
                 {
-                    ConfigurationResult configurationResult =
+                    IConfigurationResult configurationResult =
                         ValidateConfigurationResult.CompileResults(serviceConfigurator.Validate());
                     if (configurationResult.Results.Any())
                         throw new HostConfigurationException("The service was not properly configured");
 
-                    ServiceBuilder serviceBuilder = serviceConfigurator.Build();
+                    IServiceBuilder serviceBuilder = serviceConfigurator.Build();
 
                     return serviceBuilder;
                 };
             return serviceBuilderFactory;
         }
 
-        public static HostConfigurator Service<T>(this HostConfigurator configurator)
+        public static IHostConfigurator Service<T>(this IHostConfigurator configurator)
             where T : class, ServiceControl, new()
         {
-            return Service(configurator, x => new T(), x => { });
+            return Service(configurator,
+                x => new T(), //serviceFactory
+                x => { }); //callback
         }
 
-        public static HostConfigurator Service<T>(this HostConfigurator configurator, Func<T> serviceFactory)
+        public static IHostConfigurator Service<T>(this IHostConfigurator configurator, Func<T> serviceFactory)
             where T : class, ServiceControl
         {
             return Service(configurator, x => serviceFactory(), x => { });
         }
 
-        public static HostConfigurator Service<T>(this HostConfigurator configurator, Func<T> serviceFactory,
+        public static IHostConfigurator Service<T>(this IHostConfigurator configurator, Func<T> serviceFactory,
             Action<ServiceConfigurator> callback)
             where T : class, ServiceControl
         {
             return Service(configurator, x => serviceFactory(), callback);
         }
 
-        public static HostConfigurator Service<T>(this HostConfigurator configurator,
-            Func<HostSettings, T> serviceFactory)
+        public static IHostConfigurator Service<T>(this IHostConfigurator configurator,
+            Func<IHostSettings, T> serviceFactory)
             where T : class, ServiceControl
         {
             return Service(configurator, serviceFactory, x => { });
         }
 
 
-        public static HostConfigurator Service<TService>(this HostConfigurator configurator,
+        public static IHostConfigurator Service<TService>(this IHostConfigurator configurator,
             Action<ServiceConfigurator<TService>> callback)
             where TService : class
         {
             if (configurator == null)
                 throw new ArgumentNullException("configurator");
             
-            ServiceBuilderFactory serviceBuilderFactory = CreateServiceBuilderFactory(callback);
+            ServiceBuilderFactoryDelegate serviceBuilderFactory = CreateServiceBuilderFactory(callback);
 
             configurator.UseServiceBuilder(serviceBuilderFactory);
 
             return configurator;
         }
 
-        public static ServiceBuilderFactory CreateServiceBuilderFactory<TService>(Action<ServiceConfigurator<TService>> callback)
+        public static ServiceBuilderFactoryDelegate CreateServiceBuilderFactory<TService>(Action<ServiceConfigurator<TService>> callback)
             where TService : class
         {
             if (callback == null)
@@ -115,14 +136,14 @@ namespace Topshelf
 
             callback(serviceConfigurator);
 
-            ServiceBuilderFactory serviceBuilderFactory = x =>
+            ServiceBuilderFactoryDelegate serviceBuilderFactory = x =>
                 {
-                    ConfigurationResult configurationResult =
+                    IConfigurationResult configurationResult =
                         ValidateConfigurationResult.CompileResults(serviceConfigurator.Validate());
                     if (configurationResult.Results.Any())
                         throw new HostConfigurationException("The service was not properly configured");
 
-                    ServiceBuilder serviceBuilder = serviceConfigurator.Build();
+                    IServiceBuilder serviceBuilder = serviceConfigurator.Build();
 
                     return serviceBuilder;
                 };

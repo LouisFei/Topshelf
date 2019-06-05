@@ -16,9 +16,12 @@ namespace Topshelf.CommandLineParser
     using System.Collections.Generic;
     using System.Linq;
 
+    /// <summary>
+    /// 解析器扩展方法
+    /// </summary>
     static class MonadParserExtensions
     {
-        public static Parser<TInput, TValue> Where<TInput, TValue>(this Parser<TInput, TValue> parser,
+        public static ParserDelegate<TInput, TValue> Where<TInput, TValue>(this ParserDelegate<TInput, TValue> parser,
             Func<TValue, bool> pred)
         {
             return input =>
@@ -31,7 +34,7 @@ namespace Topshelf.CommandLineParser
                 };
         }
 
-        public static Parser<TInput, TSelect> Select<TInput, TValue, TSelect>(this Parser<TInput, TValue> parser,
+        public static ParserDelegate<TInput, TSelect> Select<TInput, TValue, TSelect>(this ParserDelegate<TInput, TValue> parser,
             Func<TValue, TSelect> selector)
         {
             return input =>
@@ -44,8 +47,20 @@ namespace Topshelf.CommandLineParser
                 };
         }
 
-        public static Parser<TInput, TSelect> SelectMany<TInput, TValue, TIntermediate, TSelect>(
-            this Parser<TInput, TValue> parser, Func<TValue, Parser<TInput, TIntermediate>> selector,
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TInput"></typeparam>
+        /// <typeparam name="TValue"></typeparam>
+        /// <typeparam name="TIntermediate"></typeparam>
+        /// <typeparam name="TSelect"></typeparam>
+        /// <param name="parser">一个要投影的值序列</param>
+        /// <param name="selector">应用于每个元素的转换函数。</param>
+        /// <param name="projector"></param>
+        /// <returns></returns>
+        public static ParserDelegate<TInput, TSelect> SelectMany<TInput, TValue, TIntermediate, TSelect>(
+            this ParserDelegate<TInput, TValue> parser, 
+            Func<TValue, ParserDelegate<TInput, TIntermediate>> selector,
             Func<TValue, TIntermediate, TSelect> projector)
         {
             return input =>
@@ -63,13 +78,20 @@ namespace Topshelf.CommandLineParser
                 };
         }
 
-        public static Parser<TInput, TValue> Or<TInput, TValue>(this Parser<TInput, TValue> first,
-            Parser<TInput, TValue> second)
+        public static ParserDelegate<TInput, TValue> Or<TInput, TValue>(this ParserDelegate<TInput, TValue> first,
+            ParserDelegate<TInput, TValue> second)
         {
             return input => first(input) ?? second(input);
         }
 
-        public static Parser<TInput, TValue> FirstMatch<TInput, TValue>(this IEnumerable<Parser<TInput, TValue>> options)
+        /// <summary>
+        /// 选择第一个匹配的
+        /// </summary>
+        /// <typeparam name="TInput"></typeparam>
+        /// <typeparam name="TResultValue"></typeparam>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public static ParserDelegate<TInput, TResultValue> FirstMatch<TInput, TResultValue>(this IEnumerable<ParserDelegate<TInput, TResultValue>> options)
         {
             return input =>
                 {
@@ -80,9 +102,9 @@ namespace Topshelf.CommandLineParser
                 };
         }
 
-        public static Parser<TInput, TSecondValue> And<TInput, TFirstValue, TSecondValue>(
-            this Parser<TInput, TFirstValue> first,
-            Parser<TInput, TSecondValue> second)
+        public static ParserDelegate<TInput, TSecondValue> And<TInput, TFirstValue, TSecondValue>(
+            this ParserDelegate<TInput, TFirstValue> first,
+            ParserDelegate<TInput, TSecondValue> second)
         {
             return input => second(first(input).Rest);
         }

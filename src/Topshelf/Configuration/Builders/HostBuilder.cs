@@ -16,17 +16,34 @@ namespace Topshelf.Builders
     using Runtime;
 
     /// <summary>
-    /// Using the service configuration, the host builder will create the host
-    /// that will be ran by the service console.
+    /// Using the service configuration, the host builder will create the host that will be ran by the service console.
+    /// 使用服务配置，主机构建器将创建将由服务控制台运行的主机。
     /// </summary>
-    public interface HostBuilder
+    public interface IHostBuilder
     {
-        HostEnvironment Environment { get; }
-        HostSettings Settings { get; }
+        /// <summary>
+        /// 主机环境
+        /// </summary>
+        IHostEnvironment Environment { get; }
 
-        Host Build(ServiceBuilder serviceBuilder);
+        /// <summary>
+        /// 主机设置
+        /// </summary>
+        IHostSettings Settings { get; }
 
+        /// <summary>
+        /// 构建主机
+        /// </summary>
+        /// <param name="serviceBuilder"></param>
+        /// <returns></returns>
+        IHost Build(IServiceBuilder serviceBuilder);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="callback"></param>
         void Match<T>(Action<T> callback)
-            where T : class, HostBuilder;
+            where T : class, IHostBuilder;
     }
 }

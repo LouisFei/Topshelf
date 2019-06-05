@@ -17,7 +17,7 @@ namespace Topshelf.Options
 
 
     public class CommandOption :
-        Option
+        IOption
     {
         readonly int _command;
 
@@ -26,7 +26,7 @@ namespace Topshelf.Options
             _command = int.Parse(command);
         }
 
-        public void ApplyTo(HostConfigurator configurator)
+        public void ApplyTo(IHostConfigurator configurator)
         {
             if (configurator == null)
                 throw new ArgumentNullException("configurator");

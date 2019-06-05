@@ -17,6 +17,6 @@ namespace Topshelf
     /// </summary>
     public interface ServicePowerEvent
     {
-        bool PowerEvent(HostControl hostControl, PowerEventArguments changedArguments);
+        bool PowerEvent(IHostControl hostControl, IPowerEventArguments changedArguments);
     }
 }

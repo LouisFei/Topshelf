@@ -24,9 +24,9 @@ namespace Topshelf.Runtime.Windows
 
         readonly string _arguments;
         readonly Installer[] _installers;
-        readonly HostSettings _settings;
+        readonly IHostSettings _settings;
 
-        public HostInstaller(HostSettings settings, string arguments, Installer[] installers)
+        public HostInstaller(IHostSettings settings, string arguments, Installer[] installers)
         {
             _installers = installers;
             _arguments = arguments;

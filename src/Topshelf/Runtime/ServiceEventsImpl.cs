@@ -1,4 +1,4 @@
-// Copyright 2007-2012 Chris Patterson, Dru Sellers, Travis Smith, et. al.
+﻿// Copyright 2007-2012 Chris Patterson, Dru Sellers, Travis Smith, et. al.
 //  
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use 
 // this file except in compliance with the License. You may obtain a copy of the 
@@ -14,6 +14,9 @@ namespace Topshelf.Runtime
 {
     using System;
 
+    /// <summary>
+    /// 服务事件集
+    /// </summary>
     public class ServiceEventsImpl :
         ServiceEvents
     {
@@ -22,6 +25,9 @@ namespace Topshelf.Runtime
         readonly EventCallbackList<HostStartContext> _beforeStart;
         readonly EventCallbackList<HostStopContext> _beforeStop;
 
+        /// <summary>
+        /// 创建服务事件集
+        /// </summary>
         public ServiceEventsImpl()
         {
             _afterStart = new EventCallbackList<HostStartedContext>();
@@ -30,34 +36,37 @@ namespace Topshelf.Runtime
             _beforeStop = new EventCallbackList<HostStopContext>();
         }
 
-        public void BeforeStart(HostControl hostControl)
+        #region 事件处理
+        public void BeforeStart(IHostControl hostControl)
         {
             var context = new HostStartContextImpl(hostControl);
 
             _beforeStart.Notify(context);
         }
 
-        public void AfterStart(HostControl hostControl)
+        public void AfterStart(IHostControl hostControl)
         {
             var context = new HostStartedContextImpl(hostControl);
 
             _afterStart.Notify(context);
         }
 
-        public void BeforeStop(HostControl hostControl)
+        public void BeforeStop(IHostControl hostControl)
         {
             var context = new HostStopContextImpl(hostControl);
 
             _beforeStop.Notify(context);
         }
 
-        public void AfterStop(HostControl hostControl)
+        public void AfterStop(IHostControl hostControl)
         {
             var context = new HostStoppedContextImpl(hostControl);
 
             _afterStop.Notify(context);
         }
+        #endregion
 
+        #region 添加事件回调
         public void AddBeforeStart(Action<HostStartContext> callback)
         {
             _beforeStart.Add(callback);
@@ -77,12 +86,17 @@ namespace Topshelf.Runtime
         {
             _afterStop.Add(callback);
         }
+        #endregion
 
+        #region 上下文类定义
+        /// <summary>
+        /// 上下文抽象基类
+        /// </summary>
         abstract class ContextImpl
         {
-            readonly HostControl _hostControl;
+            readonly IHostControl _hostControl;
 
-            public ContextImpl(HostControl hostControl)
+            public ContextImpl(IHostControl hostControl)
             {
                 _hostControl = hostControl;
             }
@@ -103,49 +117,65 @@ namespace Topshelf.Runtime
             }
         }
 
+        /// <summary>
+        /// 主机启动上下文
+        /// </summary>
         class HostStartContextImpl :
             ContextImpl,
             HostStartContext
         {
-            public HostStartContextImpl(HostControl hostControl)
+            public HostStartContextImpl(IHostControl hostControl)
                 : base(hostControl)
             {
             }
 
+            /// <summary>
+            /// 取消启动
+            /// </summary>
             public void CancelStart()
             {
                 throw new ServiceControlException("The start service operation was canceled.");
             }
         }
 
+        /// <summary>
+        /// 主机已启动上下文
+        /// </summary>
         class HostStartedContextImpl :
             ContextImpl,
             HostStartedContext
         {
-            public HostStartedContextImpl(HostControl hostControl)
+            public HostStartedContextImpl(IHostControl hostControl)
                 : base(hostControl)
             {
             }
         }
 
+        /// <summary>
+        /// 主机停止上下文
+        /// </summary>
         class HostStopContextImpl :
             ContextImpl,
             HostStopContext
         {
-            public HostStopContextImpl(HostControl hostControl)
+            public HostStopContextImpl(IHostControl hostControl)
                 : base(hostControl)
             {
             }
         }
 
+        /// <summary>
+        /// 主要已停下上下文
+        /// </summary>
         class HostStoppedContextImpl :
             ContextImpl,
             HostStoppedContext
         {
-            public HostStoppedContextImpl(HostControl hostControl)
+            public HostStoppedContextImpl(IHostControl hostControl)
                 : base(hostControl)
             {
             }
         }
+        #endregion
     }
 }

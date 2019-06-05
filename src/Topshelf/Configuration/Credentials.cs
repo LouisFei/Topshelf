@@ -14,9 +14,17 @@ namespace Topshelf
 {
 	using System.ServiceProcess;
 
-
+    /// <summary>
+    /// 登录凭证
+    /// </summary>
 	public class Credentials
 	{
+        /// <summary>
+        /// 创建登录凭证
+        /// </summary>
+        /// <param name="username">登录用户名</param>
+        /// <param name="password">登录密码</param>
+        /// <param name="account">登录类型</param>
 		public Credentials(string username, string password, ServiceAccount account)
 		{
 			Username = username;
@@ -24,8 +32,17 @@ namespace Topshelf
 			Password = password;
 		}
 
+        /// <summary>
+        /// 登录用户名
+        /// </summary>
 		public string Username { get; set; }
+        /// <summary>
+        /// 登录密码
+        /// </summary>
 		public string Password { get; set; }
+        /// <summary>
+        /// 登录类型
+        /// </summary>
 		public ServiceAccount Account { get; set; }
 	}
 }

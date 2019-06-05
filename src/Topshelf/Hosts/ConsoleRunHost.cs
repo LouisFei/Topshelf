@@ -23,22 +23,36 @@ namespace Topshelf.Hosts
     using Microsoft.Win32;
     using Runtime;
 
-
+    /// <summary>
+    /// 控制台运行的主机
+    /// </summary>
     public class ConsoleRunHost :
-        Host,
-        HostControl
+        IHost,
+        IHostControl
     {
         readonly LogWriter _log = HostLogger.Get<ConsoleRunHost>();
-        readonly HostEnvironment _environment;
-        readonly ServiceHandle _serviceHandle;
-        readonly HostSettings _settings;
+        readonly IHostEnvironment _environment;
+        readonly IServiceHandle _serviceHandle;
+        readonly IHostSettings _settings;
         int _deadThread;
 
+        /// <summary>
+        /// 退出代码
+        /// </summary>
         TopshelfExitCode _exitCode;
+        /// <summary>
+        /// 通知一个或多个正在等待的线程已发生事件。
+        /// </summary>
         ManualResetEvent _exit;
         volatile bool _hasCancelled;
 
-        public ConsoleRunHost(HostSettings settings, HostEnvironment environment, ServiceHandle serviceHandle)
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="settings">主机设置</param>
+        /// <param name="environment">主机环境</param>
+        /// <param name="serviceHandle">服务处理</param>
+        public ConsoleRunHost(IHostSettings settings, IHostEnvironment environment, IServiceHandle serviceHandle)
         {
             if (settings == null)
                 throw new ArgumentNullException("settings");
@@ -135,21 +149,23 @@ namespace Topshelf.Hosts
         }
 
 
-        void HostControl.RequestAdditionalTime(TimeSpan timeRemaining)
+        void IHostControl.RequestAdditionalTime(TimeSpan timeRemaining)
         {
             // good for you, maybe we'll use a timer for startup at some point but for debugging
+            // 对你来说很好，也许我们会在某个时间点使用计时器启动但是用于调试
             // it's a pain in the ass
+            // 真讨厌
         }
 
 
-        void HostControl.Stop()
+        void IHostControl.Stop()
         {
             _log.Info("Service Stop requested, exiting.");
             _exit.Set();
         }
 
 
-        void HostControl.Restart()
+        void IHostControl.Restart()
         {
             _log.Info("Service Restart requested, but we don't support that here, so we are exiting.");
             _exit.Set();
@@ -242,7 +258,7 @@ namespace Topshelf.Hosts
 
 
         class ConsoleSessionChangedArguments :
-            SessionChangedArguments
+            ISessionChangedArguments
         {
             readonly SessionChangeReasonCode _reasonCode;
             readonly int _sessionId;
@@ -265,7 +281,7 @@ namespace Topshelf.Hosts
         }
 
         class ConsolePowerEventArguments :
-            PowerEventArguments
+            IPowerEventArguments
         {
             readonly PowerEventCode _eventCode;
             public ConsolePowerEventArguments(PowerModes powerMode)

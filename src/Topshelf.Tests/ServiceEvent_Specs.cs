@@ -107,12 +107,12 @@ namespace Topshelf.Tests
 
         class MyService : ServiceControl
         {
-            public bool Start(HostControl hostControl)
+            public bool Start(IHostControl hostControl)
             {
                 return true;
             }
 
-            public bool Stop(HostControl hostControl)
+            public bool Stop(IHostControl hostControl)
             {
                 return true;
             }

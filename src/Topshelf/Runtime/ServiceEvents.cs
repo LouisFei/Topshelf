@@ -12,11 +12,30 @@
 // specific language governing permissions and limitations under the License.
 namespace Topshelf.Runtime
 {
+    /// <summary>
+    /// 服务事件集
+    /// </summary>
     public interface ServiceEvents
     {
-        void BeforeStart(HostControl hostControl);
-        void AfterStart(HostControl hostControl);
-        void BeforeStop(HostControl hostControl);
-        void AfterStop(HostControl hostControl);
+        /// <summary>
+        /// 服务启动前
+        /// </summary>
+        /// <param name="hostControl"></param>
+        void BeforeStart(IHostControl hostControl);
+        /// <summary>
+        /// 服务启动后
+        /// </summary>
+        /// <param name="hostControl"></param>
+        void AfterStart(IHostControl hostControl);
+        /// <summary>
+        /// 服务停止前
+        /// </summary>
+        /// <param name="hostControl"></param>
+        void BeforeStop(IHostControl hostControl);
+        /// <summary>
+        /// 服务停止后
+        /// </summary>
+        /// <param name="hostControl"></param>
+        void AfterStop(IHostControl hostControl);
     }
 }

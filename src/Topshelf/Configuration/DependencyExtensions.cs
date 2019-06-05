@@ -16,9 +16,12 @@ namespace Topshelf
     using Constants;
     using HostConfigurators;
 
+    /// <summary>
+    /// 依赖扩展方法
+    /// </summary>
     public static class DependencyExtensions
     {
-        public static HostConfigurator AddDependency(this HostConfigurator configurator, string name)
+        public static IHostConfigurator AddDependency(this IHostConfigurator configurator, string name)
         {
             if (configurator == null)
                 throw new ArgumentNullException("configurator");
@@ -33,27 +36,27 @@ namespace Topshelf
             return configurator;
         }
 
-        public static HostConfigurator DependsOn(this HostConfigurator configurator, string name)
+        public static IHostConfigurator DependsOn(this IHostConfigurator configurator, string name)
         {
             return AddDependency(configurator, name);
         }
 
-        public static HostConfigurator DependsOnMsmq(this HostConfigurator configurator)
+        public static IHostConfigurator DependsOnMsmq(this IHostConfigurator configurator)
         {
             return AddDependency(configurator, KnownServiceNames.Msmq);
         }
 
-        public static HostConfigurator DependsOnMsSql(this HostConfigurator configurator)
+        public static IHostConfigurator DependsOnMsSql(this IHostConfigurator configurator)
         {
             return AddDependency(configurator, KnownServiceNames.SqlServer);
         }
 
-        public static HostConfigurator DependsOnEventLog(this HostConfigurator configurator)
+        public static IHostConfigurator DependsOnEventLog(this IHostConfigurator configurator)
         {
             return AddDependency(configurator, KnownServiceNames.EventLog);
         }
 
-        public static HostConfigurator DependsOnIis(this HostConfigurator configurator)
+        public static IHostConfigurator DependsOnIis(this IHostConfigurator configurator)
         {
             return AddDependency(configurator, KnownServiceNames.IIS);
         }

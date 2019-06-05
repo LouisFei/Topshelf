@@ -13,7 +13,7 @@
 namespace Topshelf
 {
     public interface HostStoppedContext :
-        HostControl
+        IHostControl
     {
     }
 }

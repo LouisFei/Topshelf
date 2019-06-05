@@ -17,9 +17,9 @@ namespace Topshelf.Options
     using HostConfigurators;
 
     public class UninstallOption :
-        Option
+        IOption
     {
-        public void ApplyTo(HostConfigurator configurator)
+        public void ApplyTo(IHostConfigurator configurator)
         {
             if (configurator == null)
                 throw new ArgumentNullException("configurator");

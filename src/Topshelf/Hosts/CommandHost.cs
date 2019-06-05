@@ -18,14 +18,14 @@ namespace Topshelf.Hosts
 
 
     public class CommandHost :
-        Host
+        IHost
     {
         readonly int _command;
-        readonly HostEnvironment _environment;
+        readonly IHostEnvironment _environment;
         readonly LogWriter _log = HostLogger.Get<StartHost>();
-        readonly HostSettings _settings;
+        readonly IHostSettings _settings;
 
-        public CommandHost(HostEnvironment environment, HostSettings settings, int command)
+        public CommandHost(IHostEnvironment environment, IHostSettings settings, int command)
         {
             _environment = environment;
             _settings = settings;

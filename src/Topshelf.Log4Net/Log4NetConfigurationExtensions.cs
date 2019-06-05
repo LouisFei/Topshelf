@@ -26,7 +26,7 @@ namespace Topshelf
         ///   设置使用Log4net日志引擎。
         /// </summary>
         /// <param name="configurator"> </param>
-        public static void UseLog4Net(this HostConfigurator configurator)
+        public static void UseLog4Net(this IHostConfigurator configurator)
         {
             Log4NetLogWriterFactory.Use();
         }
@@ -37,7 +37,7 @@ namespace Topshelf
         /// </summary>
         /// <param name="configurator"> </param>
         /// <param name="configFileName"> The name of the log4net xml configuration file。log4net配置文件名。 </param>
-        public static void UseLog4Net(this HostConfigurator configurator, string configFileName)
+        public static void UseLog4Net(this IHostConfigurator configurator, string configFileName)
         {
             Log4NetLogWriterFactory.Use(configFileName);
         }
@@ -48,7 +48,7 @@ namespace Topshelf
         /// <param name="configurator"> </param>
         /// <param name="configFileName"> The name of the log4net xml configuration file </param>
         /// <param name="watchFile"> Should log4net watch the config file? 监视log4net配置文件</param>
-        public static void UseLog4Net(this HostConfigurator configurator, string configFileName, bool watchFile)
+        public static void UseLog4Net(this IHostConfigurator configurator, string configFileName, bool watchFile)
         {
             Log4NetLogWriterFactory.Use(configFileName, watchFile);
         }

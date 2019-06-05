@@ -23,19 +23,19 @@ namespace Topshelf.Runtime.Windows
 
     public class WindowsServiceHost :
         ServiceBase,
-        Host,
-        HostControl
+        IHost,
+        IHostControl
     {
         static readonly LogWriter _log = HostLogger.Get<WindowsServiceHost>();
-        readonly HostEnvironment _environment;
-        readonly ServiceHandle _serviceHandle;
-        readonly HostSettings _settings;
-        readonly HostConfigurator _configurator;
+        readonly IHostEnvironment _environment;
+        readonly IServiceHandle _serviceHandle;
+        readonly IHostSettings _settings;
+        readonly IHostConfigurator _configurator;
         int _deadThread;
         bool _disposed;
         Exception _unhandledException;
 
-        public WindowsServiceHost(HostEnvironment environment, HostSettings settings, ServiceHandle serviceHandle, HostConfigurator configurator)
+        public WindowsServiceHost(IHostEnvironment environment, IHostSettings settings, IServiceHandle serviceHandle, IHostConfigurator configurator)
         {
             if (settings == null)
                 throw new ArgumentNullException("settings");
@@ -81,21 +81,21 @@ namespace Topshelf.Runtime.Windows
             return (TopshelfExitCode)Enum.ToObject(typeof(TopshelfExitCode), ExitCode);
         }
 
-        void HostControl.RequestAdditionalTime(TimeSpan timeRemaining)
+        void IHostControl.RequestAdditionalTime(TimeSpan timeRemaining)
         {
             _log.DebugFormat("Requesting additional time: {0}", timeRemaining);
 
             RequestAdditionalTime((int)timeRemaining.TotalMilliseconds);
         }
 
-        void HostControl.Restart()
+        void IHostControl.Restart()
         {
             _log.Fatal("Restart is not yet implemented");
 
             throw new NotImplementedException("This is not done yet, so I'm trying");
         }
 
-        void HostControl.Stop()
+        void IHostControl.Stop()
         {
             if (CanStop)
             {
@@ -338,7 +338,7 @@ namespace Topshelf.Runtime.Windows
 
 
         class WindowsSessionChangedArguments :
-            SessionChangedArguments
+            ISessionChangedArguments
         {
             readonly SessionChangeReasonCode _reasonCode;
             readonly int _sessionId;
@@ -363,7 +363,7 @@ namespace Topshelf.Runtime.Windows
         }
 
         class WindowsPowerEventArguments :
-            PowerEventArguments
+            IPowerEventArguments
         {
             readonly PowerEventCode _eventCode;
 

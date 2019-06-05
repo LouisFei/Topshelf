@@ -17,7 +17,7 @@ namespace Topshelf
     /// </summary>
     public interface ServiceSuspend
     {
-        bool Pause(HostControl hostControl);
-        bool Continue(HostControl hostControl);
+        bool Pause(IHostControl hostControl);
+        bool Continue(IHostControl hostControl);
     }
 }

@@ -14,8 +14,9 @@ namespace Topshelf
 {
     /// <summary>
     ///   A Host can be a number of configured service hosts, from installers to service runners
+    ///   主机可以是许多配置的服务主机，从安装程序到服务运行程序
     /// </summary>
-    public interface Host
+    public interface IHost
     {
         /// <summary>
         ///   Runs the configured host

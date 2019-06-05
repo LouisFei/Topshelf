@@ -14,9 +14,15 @@ namespace Topshelf
 {
     /// <summary>
     /// Implemented by services that support custom command events
+    /// 由支持自定义命令事件的服务实现
     /// </summary>
     public interface ServiceCustomCommand
     {
-        void CustomCommand(HostControl hostControl, int command);
+        /// <summary>
+        /// 自定义命令
+        /// </summary>
+        /// <param name="hostControl"></param>
+        /// <param name="command"></param>
+        void CustomCommand(IHostControl hostControl, int command);
     }
 }

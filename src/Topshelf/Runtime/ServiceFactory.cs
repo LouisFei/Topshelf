@@ -12,6 +12,6 @@
 // specific language governing permissions and limitations under the License.
 namespace Topshelf.Runtime
 {
-    public delegate T ServiceFactory<T>(HostSettings settings)
+    public delegate T ServiceFactory<T>(IHostSettings settings)
         where T : class;
 }

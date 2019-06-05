@@ -16,5 +16,12 @@ namespace Topshelf.CommandLineParser
     //
     // http://blogs.msdn.com/lukeh/archive/2007/08/19/monadic-parser-combinators-using-c-3-0.aspx
 
-    delegate Result<TInput, TValue> Parser<TInput, TValue>(TInput input);
+    /// <summary>
+    /// 解析器方法委托（强类型函数指针）
+    /// </summary>
+    /// <typeparam name="TInput">输入参数的类型</typeparam>
+    /// <typeparam name="TResultValue">输出参数值类型</typeparam>
+    /// <param name="input">输入参数</param>
+    /// <returns></returns>
+    delegate Result<TInput, TResultValue> ParserDelegate<TInput, TResultValue>(TInput input);
 }

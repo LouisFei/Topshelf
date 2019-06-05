@@ -16,10 +16,13 @@ namespace Topshelf.Options
     using Builders;
     using HostConfigurators;
 
+    /// <summary>
+    /// 安装选项
+    /// </summary>
     public class InstallOption :
-        Option
+        IOption
     {
-        public void ApplyTo(HostConfigurator configurator)
+        public void ApplyTo(IHostConfigurator configurator)
         {
             if (configurator == null)
                 throw new ArgumentNullException("configurator");

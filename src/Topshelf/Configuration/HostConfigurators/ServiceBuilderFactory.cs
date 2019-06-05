@@ -15,5 +15,10 @@ namespace Topshelf.HostConfigurators
     using Builders;
     using Runtime;
 
-    public delegate ServiceBuilder ServiceBuilderFactory(HostSettings settings);
+    /// <summary>
+    /// 服务生成器工厂
+    /// </summary>
+    /// <param name="settings"></param>
+    /// <returns></returns>
+    public delegate IServiceBuilder ServiceBuilderFactoryDelegate(IHostSettings settings);
 }

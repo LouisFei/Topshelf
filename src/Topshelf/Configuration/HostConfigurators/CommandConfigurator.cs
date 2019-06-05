@@ -18,7 +18,7 @@ namespace Topshelf.HostConfigurators
 
 
     public class CommandConfigurator :
-        HostBuilderConfigurator
+        IHostBuilderConfigurator
     {
         readonly int _command;
 
@@ -27,13 +27,13 @@ namespace Topshelf.HostConfigurators
             _command = command;
         }
 
-        public IEnumerable<ValidateResult> Validate()
+        public IEnumerable<IValidateResult> Validate()
         {
             if (_command < 128 || _command > 256)
                 yield return this.Failure("Command", "must be between 128 and 256");
         }
 
-        public HostBuilder Configure(HostBuilder builder)
+        public IHostBuilder Configure(IHostBuilder builder)
         {
             return new CommandBuilder(builder, _command);
         }

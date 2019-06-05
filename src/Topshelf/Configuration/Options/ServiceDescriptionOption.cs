@@ -15,7 +15,7 @@ namespace Topshelf.Options
     using HostConfigurators;
 
     public class ServiceDescriptionOption : 
-        Option
+        IOption
     {
         string _description;
 
@@ -24,7 +24,7 @@ namespace Topshelf.Options
             _description = description;
         }
 
-        public void ApplyTo(HostConfigurator configurator)
+        public void ApplyTo(IHostConfigurator configurator)
         {
             configurator.SetDescription(_description);
         }

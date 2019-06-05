@@ -16,22 +16,25 @@ namespace Topshelf
 
     /// <summary>
     /// Allows the service to control the host while running
+    /// 允许服务在运行时控制主机
     /// </summary>
-    public interface HostControl
+    public interface IHostControl
     {
         /// <summary>
-        /// Tells the Host that the service is still starting, which resets the
-        /// timeout.
+        /// Tells the Host that the service is still starting, which resets the timeout.
+        /// 告诉主机服务仍在启动，这将重置超时。
         /// </summary>
         void RequestAdditionalTime(TimeSpan timeRemaining);
 
         /// <summary>
         /// Stops the Host
+        /// 停止主机
         /// </summary>
         void Stop();
 
         /// <summary>
         /// Restarts the Host
+        /// 重新启动主机
         /// </summary>
         void Restart();
     }

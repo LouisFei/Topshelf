@@ -142,7 +142,7 @@ namespace Topshelf.Tests
                 _throwOnStop = throwOnStop;
             }
 
-            public bool Start(HostControl hostControl)
+            public bool Start(IHostControl hostControl)
             {
                 if (_throwOnStart)
                 {
@@ -152,7 +152,7 @@ namespace Topshelf.Tests
                 return true;
             }
 
-            public bool Stop(HostControl hostControl)
+            public bool Stop(IHostControl hostControl)
             {
                 if (_throwOnStop)
                 {

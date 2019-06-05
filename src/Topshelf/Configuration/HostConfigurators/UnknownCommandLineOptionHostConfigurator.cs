@@ -17,7 +17,7 @@ namespace Topshelf.HostConfigurators
     using Configurators;
 
     public class UnknownCommandLineOptionHostConfigurator :
-        HostBuilderConfigurator
+        IHostBuilderConfigurator
     {
         readonly string _text;
 
@@ -26,12 +26,12 @@ namespace Topshelf.HostConfigurators
             _text = text;
         }
 
-        public IEnumerable<ValidateResult> Validate()
+        public IEnumerable<IValidateResult> Validate()
         {
             yield return this.Failure("Command Line", "An unknown command-line option was found: " + _text);
         }
 
-        public HostBuilder Configure(HostBuilder builder)
+        public IHostBuilder Configure(IHostBuilder builder)
         {
             return builder;
         }

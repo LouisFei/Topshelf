@@ -14,5 +14,5 @@ namespace Topshelf.HostConfigurators
 {
     using Builders;
 
-    public delegate EnvironmentBuilder EnvironmentBuilderFactory(HostConfigurator configurator);
+    public delegate IEnvironmentBuilder EnvironmentBuilderFactoryDelegate(IHostConfigurator configurator);
 }

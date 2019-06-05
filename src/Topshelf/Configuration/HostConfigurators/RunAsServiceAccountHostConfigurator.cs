@@ -20,7 +20,7 @@ namespace Topshelf.HostConfigurators
 
 
     public class RunAsServiceAccountHostConfigurator :
-        HostBuilderConfigurator
+        IHostBuilderConfigurator
     {
         public RunAsServiceAccountHostConfigurator(ServiceAccount accountType)
         {
@@ -29,7 +29,7 @@ namespace Topshelf.HostConfigurators
 
         public ServiceAccount AccountType { get; private set; }
 
-        public HostBuilder Configure(HostBuilder builder)
+        public IHostBuilder Configure(IHostBuilder builder)
         {
             if (builder == null)
                 throw new ArgumentNullException("builder");
@@ -39,7 +39,7 @@ namespace Topshelf.HostConfigurators
             return builder;
         }
 
-        public IEnumerable<ValidateResult> Validate()
+        public IEnumerable<IValidateResult> Validate()
         {
             yield break;
         }

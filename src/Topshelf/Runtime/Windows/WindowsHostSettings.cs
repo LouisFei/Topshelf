@@ -14,16 +14,21 @@ namespace Topshelf.Runtime.Windows
 {
     using System;
 
+    /// <summary>
+    /// Windows主机设置
+    /// </summary>
     [Serializable]
     public class WindowsHostSettings :
-        HostSettings
+        IHostSettings
     {
         public const string InstanceSeparator = "$";
         string _description;
         string _displayName;
 
         /// <summary>
-        ///   Creates a new WindowsServiceDescription using empty strings for the properties. The class is required to have names by the consumers.
+        ///  创建一个Windows主机设置
+        ///   Creates a new WindowsServiceDescription using empty strings for the properties. 
+        ///   The class is required to have names by the consumers.
         /// </summary>
         public WindowsHostSettings()
             : this(string.Empty, string.Empty)

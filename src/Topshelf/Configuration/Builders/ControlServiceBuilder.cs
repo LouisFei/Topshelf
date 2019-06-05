@@ -1,4 +1,4 @@
-// Copyright 2007-2012 Chris Patterson, Dru Sellers, Travis Smith, et. al.
+﻿// Copyright 2007-2012 Chris Patterson, Dru Sellers, Travis Smith, et. al.
 //  
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use 
 // this file except in compliance with the License. You may obtain a copy of the 
@@ -15,20 +15,34 @@ namespace Topshelf.Builders
     using System;
     using Runtime;
 
+    /// <summary>
+    /// 控制服务构建器
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class ControlServiceBuilder<T> :
-        ServiceBuilder
+        IServiceBuilder
         where T : class, ServiceControl
     {
         readonly ServiceEvents _serviceEvents;
-        readonly Func<HostSettings, T> _serviceFactory;
+        readonly Func<IHostSettings, T> _serviceFactory;
 
-        public ControlServiceBuilder(Func<HostSettings, T> serviceFactory, ServiceEvents serviceEvents)
+        /// <summary>
+        /// 创建控制服务构建器实例
+        /// </summary>
+        /// <param name="serviceFactory"></param>
+        /// <param name="serviceEvents"></param>
+        public ControlServiceBuilder(Func<IHostSettings, T> serviceFactory, ServiceEvents serviceEvents)
         {
             _serviceFactory = serviceFactory;
             _serviceEvents = serviceEvents;
         }
 
-        public ServiceHandle Build(HostSettings settings)
+        /// <summary>
+        /// 构建服务
+        /// </summary>
+        /// <param name="settings"></param>
+        /// <returns></returns>
+        public IServiceHandle Build(IHostSettings settings)
         {
             try
             {
@@ -42,12 +56,20 @@ namespace Topshelf.Builders
             }
         }
 
+        /// <summary>
+        /// 控制服务处理
+        /// </summary>
         class ControlServiceHandle :
-            ServiceHandle
+            IServiceHandle
         {
             readonly T _service;
             readonly ServiceEvents _serviceEvents;
 
+            /// <summary>
+            /// 创建控制服务处理实例
+            /// </summary>
+            /// <param name="service"></param>
+            /// <param name="serviceEvents"></param>
             public ControlServiceHandle(T service, ServiceEvents serviceEvents)
             {
                 _service = service;
@@ -61,7 +83,12 @@ namespace Topshelf.Builders
                     disposable.Dispose();
             }
 
-            public bool Start(HostControl hostControl)
+            /// <summary>
+            /// 启动服务
+            /// </summary>
+            /// <param name="hostControl"></param>
+            /// <returns></returns>
+            public bool Start(IHostControl hostControl)
             {
                 _serviceEvents.BeforeStart(hostControl);
                 bool started = _service.Start(hostControl);
@@ -70,7 +97,12 @@ namespace Topshelf.Builders
                 return started;
             }
 
-            public bool Stop(HostControl hostControl)
+            /// <summary>
+            /// 停止服务
+            /// </summary>
+            /// <param name="hostControl"></param>
+            /// <returns></returns>
+            public bool Stop(IHostControl hostControl)
             {
                 _serviceEvents.BeforeStop(hostControl);
                 bool stopped = _service.Stop(hostControl);
@@ -79,21 +111,35 @@ namespace Topshelf.Builders
                 return stopped;
             }
 
-            public bool Pause(HostControl hostControl)
+            /// <summary>
+            /// 暂停服务
+            /// </summary>
+            /// <param name="hostControl"></param>
+            /// <returns></returns>
+            public bool Pause(IHostControl hostControl)
             {
                 var service = _service as ServiceSuspend;
 
                 return service != null && service.Pause(hostControl);
             }
 
-            public bool Continue(HostControl hostControl)
+            /// <summary>
+            /// 继续服务
+            /// </summary>
+            /// <param name="hostControl"></param>
+            /// <returns></returns>
+            public bool Continue(IHostControl hostControl)
             {
                 var service = _service as ServiceSuspend;
 
                 return service != null && service.Continue(hostControl);
             }
 
-            public void Shutdown(HostControl hostControl)
+            /// <summary>
+            /// 关闭服务
+            /// </summary>
+            /// <param name="hostControl"></param>
+            public void Shutdown(IHostControl hostControl)
             {
                 var serviceShutdown = _service as ServiceShutdown;
                 if (serviceShutdown != null)
@@ -102,7 +148,12 @@ namespace Topshelf.Builders
                 }
             }
 
-            public void SessionChanged(HostControl hostControl, SessionChangedArguments arguments)
+            /// <summary>
+            /// 会话改变事件处理
+            /// </summary>
+            /// <param name="hostControl"></param>
+            /// <param name="arguments"></param>
+            public void SessionChanged(IHostControl hostControl, ISessionChangedArguments arguments)
             {
                 var sessionChange = _service as ServiceSessionChange;
                 if (sessionChange != null)
@@ -111,7 +162,13 @@ namespace Topshelf.Builders
                 }
             }
 
-            public bool PowerEvent(HostControl hostControl, PowerEventArguments arguments)
+            /// <summary>
+            /// 电源改变事件处理？？
+            /// </summary>
+            /// <param name="hostControl"></param>
+            /// <param name="arguments"></param>
+            /// <returns></returns>
+            public bool PowerEvent(IHostControl hostControl, IPowerEventArguments arguments)
             {
                 var powerEvent = _service as ServicePowerEvent;
                 if (powerEvent != null)
@@ -122,7 +179,12 @@ namespace Topshelf.Builders
                 return false;
             }
 
-            public void CustomCommand(HostControl hostControl, int command)
+            /// <summary>
+            /// 处理自定义命令
+            /// </summary>
+            /// <param name="hostControl"></param>
+            /// <param name="command"></param>
+            public void CustomCommand(IHostControl hostControl, int command)
             {
                 var customCommand = _service as ServiceCustomCommand;
                 if (customCommand != null)

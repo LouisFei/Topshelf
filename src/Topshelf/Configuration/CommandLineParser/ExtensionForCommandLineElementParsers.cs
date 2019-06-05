@@ -17,8 +17,8 @@ namespace Topshelf.CommandLineParser
 
     static class ExtensionForCommandLineElementParsers
     {
-        public static Parser<IEnumerable<ICommandLineElement>, ISwitchElement> Optional(
-            this Parser<IEnumerable<ICommandLineElement>, ISwitchElement> source, string key, bool defaultValue)
+        public static ParserDelegate<IEnumerable<ICommandLineElement>, ISwitchElement> Optional(
+            this ParserDelegate<IEnumerable<ICommandLineElement>, ISwitchElement> source, string key, bool defaultValue)
         {
             return input =>
                 {
@@ -37,8 +37,8 @@ namespace Topshelf.CommandLineParser
                 };
         }
 
-        public static Parser<IEnumerable<ICommandLineElement>, IDefinitionElement> Optional(
-            this Parser<IEnumerable<ICommandLineElement>, IDefinitionElement> source, string key, string defaultValue)
+        public static ParserDelegate<IEnumerable<ICommandLineElement>, IDefinitionElement> Optional(
+            this ParserDelegate<IEnumerable<ICommandLineElement>, IDefinitionElement> source, string key, string defaultValue)
         {
             return input =>
                 {

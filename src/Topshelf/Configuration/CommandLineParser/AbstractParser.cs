@@ -1,4 +1,4 @@
-// Copyright 2007-2012 Chris Patterson, Dru Sellers, Travis Smith, et. al.
+﻿// Copyright 2007-2012 Chris Patterson, Dru Sellers, Travis Smith, et. al.
 //  
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use 
 // this file except in compliance with the License. You may obtain a copy of the 
@@ -14,23 +14,46 @@ namespace Topshelf.CommandLineParser
 {
     using System.Linq;
 
+    /// <summary>
+    /// 解析器抽象基类
+    /// </summary>
+    /// <typeparam name="TInput"></typeparam>
     abstract class AbstractParser<TInput>
     {
-        public Parser<TInput, TValue> Succeed<TValue>(TValue value)
+        /// <summary>
+        /// 直接给定一个可以成功返回的值
+        /// </summary>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public ParserDelegate<TInput, TValue> Succeed<TValue>(TValue value)
         {
             return input => new Result<TInput, TValue>(value, input);
         }
 
-        public Parser<TInput, TValue[]> Rep<TValue>(Parser<TInput, TValue> parser)
+        /// <summary>
+        /// 把单值的返回包装成列表值的返回
+        /// </summary>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="parser"></param>
+        /// <returns></returns>
+        public ParserDelegate<TInput, TValue[]> Rep<TValue>(ParserDelegate<TInput, TValue> parser)
         {
             return Rep1(parser).Or(Succeed(new TValue[0]));
         }
 
-        public Parser<TInput, TValue[]> Rep1<TValue>(Parser<TInput, TValue> parser)
+        /// <summary>
+        /// 把单值的返回包装成列表值的返回
+        /// </summary>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="parser"></param>
+        /// <returns></returns>
+        public ParserDelegate<TInput, TValue[]> Rep1<TValue>(ParserDelegate<TInput, TValue> parser)
         {
             return from x in parser
                    from xs in Rep(parser)
                    select (new[] {x}).Concat(xs).ToArray();
         }
     }
+
 }

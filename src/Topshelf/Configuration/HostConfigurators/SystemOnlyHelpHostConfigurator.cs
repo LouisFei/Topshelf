@@ -17,14 +17,14 @@ namespace Topshelf.HostConfigurators
     using Configurators;
 
     public class SystemOnlyHelpHostConfigurator :
-        HostBuilderConfigurator
+        IHostBuilderConfigurator
     {
-        public IEnumerable<ValidateResult> Validate()
+        public IEnumerable<IValidateResult> Validate()
         {
             yield break;
         }
 
-        public HostBuilder Configure(HostBuilder builder)
+        public IHostBuilder Configure(IHostBuilder builder)
         {
             builder.Match<HelpBuilder>(x => x.SystemHelpTextOnly());
 

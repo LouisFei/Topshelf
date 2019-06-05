@@ -24,7 +24,7 @@ namespace Topshelf.Tests
         {
             var prefix = "PhatBoyG In The House!";
 
-            Host host = HostFactory.New(x =>
+            IHost host = HostFactory.New(x =>
             {
                 x.Service<MyService>();
                 x.SetHelpTextPrefix(prefix);
@@ -39,7 +39,7 @@ namespace Topshelf.Tests
         [Test]
         public void Should_be_requested_via_the_command_line()
         {
-            Host host = HostFactory.New(x =>
+            IHost host = HostFactory.New(x =>
             {
                 x.Service<MyService>();
                 x.ApplyCommandLine("help");
@@ -55,7 +55,7 @@ namespace Topshelf.Tests
         {
             var prefix = "PhatBoyG In The House!";
 
-            Host host = HostFactory.New(x =>
+            IHost host = HostFactory.New(x =>
                 {
                     x.Service<MyService>();
                     x.SetHelpTextPrefix(prefix);
@@ -70,22 +70,22 @@ namespace Topshelf.Tests
 
         class MyService : ServiceControl
         {
-            public bool Start(HostControl hostControl)
+            public bool Start(IHostControl hostControl)
             {
                 throw new NotImplementedException();
             }
 
-            public bool Stop(HostControl hostControl)
+            public bool Stop(IHostControl hostControl)
             {
                 throw new NotImplementedException();
             }
 
-            public bool Pause(HostControl hostControl)
+            public bool Pause(IHostControl hostControl)
             {
                 throw new NotImplementedException();
             }
 
-            public bool Continue(HostControl hostControl)
+            public bool Continue(IHostControl hostControl)
             {
                 throw new NotImplementedException();
             }

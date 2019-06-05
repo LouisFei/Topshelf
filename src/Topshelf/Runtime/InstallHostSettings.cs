@@ -1,4 +1,4 @@
-// Copyright 2007-2012 Chris Patterson, Dru Sellers, Travis Smith, et. al.
+﻿// Copyright 2007-2012 Chris Patterson, Dru Sellers, Travis Smith, et. al.
 //  
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use 
 // this file except in compliance with the License. You may obtain a copy of the 
@@ -12,11 +12,25 @@
 // specific language governing permissions and limitations under the License.
 namespace Topshelf.Runtime
 {
-    public interface InstallHostSettings :
-        HostSettings
+    /// <summary>
+    /// 安装主机设置
+    /// </summary>
+    public interface IInstallHostSettings :
+        IHostSettings
     {
+        /// <summary>
+        /// 登录凭证
+        /// </summary>
         Credentials Credentials { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         string[] Dependencies { get; }
+
+        /// <summary>
+        /// 主机启动模式
+        /// </summary>
         HostStartMode StartMode { get; }
     }
 }

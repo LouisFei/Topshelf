@@ -25,7 +25,7 @@ namespace Topshelf
         ///   Specify that you want to use the NLog logging framework.
         /// </summary>
         /// <param name="configurator"> Optional service bus configurator </param>
-        public static void UseNLog(this HostConfigurator configurator)
+        public static void UseNLog(this IHostConfigurator configurator)
         {
             NLogLogWriterFactory.Use();
         }
@@ -35,7 +35,7 @@ namespace Topshelf
         /// </summary>
         /// <param name="configurator"> Optional service bus configurator </param>
         /// <param name="factory"> Required log-producing factory from NLog </param>
-        public static void UseNLog(this HostConfigurator configurator, LogFactory factory)
+        public static void UseNLog(this IHostConfigurator configurator, LogFactory factory)
         {
             NLogLogWriterFactory.Use(factory);
         }

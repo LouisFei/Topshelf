@@ -17,7 +17,7 @@ namespace Topshelf.HostConfigurators
     using Options;
 
     class CommandLineDefinitionConfigurator :
-        CommandLineConfigurator
+        ICommandLineConfigurator
     {
         readonly Action<string> _callback;
         readonly string _name;
@@ -28,14 +28,14 @@ namespace Topshelf.HostConfigurators
             _callback = callback;
         }
 
-        public void Configure(ICommandLineElementParser<Option> parser)
+        public void Configure(ICommandLineElementParser<IOption> parser)
         {
             parser.Add(from s in parser.Definition(_name)
-                       select (Option)new ServiceDefinitionOption(s, _callback));
+                       select (IOption)new ServiceDefinitionOption(s, _callback));
         }
 
         class ServiceDefinitionOption :
-            Option
+            IOption
         {
             readonly Action<string> _callback;
             readonly string _value;
@@ -46,7 +46,7 @@ namespace Topshelf.HostConfigurators
                 _value = element.Value;
             }
 
-            public void ApplyTo(HostConfigurator configurator)
+            public void ApplyTo(IHostConfigurator configurator)
             {
                 _callback(_value);
             }

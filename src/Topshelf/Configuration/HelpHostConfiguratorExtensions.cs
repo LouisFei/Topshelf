@@ -22,7 +22,7 @@ namespace Topshelf
         /// </summary>
         /// <param name="hostConfigurator"></param>
         /// <param name="text"></param>
-        public static HostConfigurator SetHelpTextPrefix(this HostConfigurator hostConfigurator, string text)
+        public static IHostConfigurator SetHelpTextPrefix(this IHostConfigurator hostConfigurator, string text)
         {
             var configurator = new PrefixHelpTextHostConfigurator(text);
 
@@ -37,7 +37,7 @@ namespace Topshelf
         /// <param name="hostConfigurator"></param>
         /// <param name="assembly">The assembly containing the text resource</param>
         /// <param name="resourceName">The name of the embedded resource</param>
-        public static HostConfigurator LoadHelpTextPrefix(this HostConfigurator hostConfigurator, Assembly assembly,
+        public static IHostConfigurator LoadHelpTextPrefix(this IHostConfigurator hostConfigurator, Assembly assembly,
             string resourceName)
         {
             var configurator = new PrefixHelpTextHostConfigurator(assembly, resourceName);

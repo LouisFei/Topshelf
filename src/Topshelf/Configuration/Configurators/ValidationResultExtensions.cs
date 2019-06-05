@@ -14,52 +14,52 @@ namespace Topshelf.Configurators
 {
     public static class ValidationResultExtensions
     {
-        public static ValidateResult Failure(this Configurator configurator, string message)
+        public static IValidateResult Failure(this IConfigurator configurator, string message)
         {
             return new ValidateResultImpl(ValidationResultDisposition.Failure, message);
         }
 
-        public static ValidateResult Failure(this Configurator configurator, string key, string message)
+        public static IValidateResult Failure(this IConfigurator configurator, string key, string message)
         {
             return new ValidateResultImpl(ValidationResultDisposition.Failure, key, message);
         }
 
-        public static ValidateResult Failure(this Configurator configurator, string key, string value, string message)
+        public static IValidateResult Failure(this IConfigurator configurator, string key, string value, string message)
         {
             return new ValidateResultImpl(ValidationResultDisposition.Failure, key, value, message);
         }
 
-        public static ValidateResult Warning(this Configurator configurator, string message)
+        public static IValidateResult Warning(this IConfigurator configurator, string message)
         {
             return new ValidateResultImpl(ValidationResultDisposition.Warning, message);
         }
 
-        public static ValidateResult Warning(this Configurator configurator, string key, string message)
+        public static IValidateResult Warning(this IConfigurator configurator, string key, string message)
         {
             return new ValidateResultImpl(ValidationResultDisposition.Warning, key, message);
         }
 
-        public static ValidateResult Warning(this Configurator configurator, string key, string value, string message)
+        public static IValidateResult Warning(this IConfigurator configurator, string key, string value, string message)
         {
             return new ValidateResultImpl(ValidationResultDisposition.Warning, key, value, message);
         }
 
-        public static ValidateResult Success(this Configurator configurator, string message)
+        public static IValidateResult Success(this IConfigurator configurator, string message)
         {
             return new ValidateResultImpl(ValidationResultDisposition.Success, message);
         }
 
-        public static ValidateResult Success(this Configurator configurator, string key, string message)
+        public static IValidateResult Success(this IConfigurator configurator, string key, string message)
         {
             return new ValidateResultImpl(ValidationResultDisposition.Success, key, message);
         }
 
-        public static ValidateResult Success(this Configurator configurator, string key, string value, string message)
+        public static IValidateResult Success(this IConfigurator configurator, string key, string value, string message)
         {
             return new ValidateResultImpl(ValidationResultDisposition.Success, key, value, message);
         }
 
-        public static ValidateResult WithParentKey(this ValidateResult result, string parentKey)
+        public static IValidateResult WithParentKey(this IValidateResult result, string parentKey)
         {
             string key = parentKey + "." + result.Key;
 

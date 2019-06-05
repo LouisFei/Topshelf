@@ -18,14 +18,14 @@ namespace Topshelf.HostConfigurators
     using Configurators;
 
     public class SudoConfigurator :
-        HostBuilderConfigurator
+        IHostBuilderConfigurator
     {
-        public IEnumerable<ValidateResult> Validate()
+        public IEnumerable<IValidateResult> Validate()
         {
             yield break;
         }
 
-        public HostBuilder Configure(HostBuilder builder)
+        public IHostBuilder Configure(IHostBuilder builder)
         {
             if (builder == null)
                 throw new ArgumentNullException("builder");

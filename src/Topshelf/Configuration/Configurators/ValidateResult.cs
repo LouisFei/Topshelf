@@ -18,7 +18,7 @@ namespace Topshelf.Configurators
     /// Reports information about the configuration before configuring
     /// so that corrections can be made without allocating resources, etc.
     /// </summary>
-    public interface ValidateResult
+    public interface IValidateResult
     {
         /// <summary>
         /// 验证结果倾向

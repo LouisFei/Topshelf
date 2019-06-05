@@ -20,7 +20,7 @@ namespace Topshelf.HostConfigurators
 
 
     public class RunAsUserHostConfigurator :
-        HostBuilderConfigurator
+        IHostBuilderConfigurator
     {
         public RunAsUserHostConfigurator(string username, string password)
         {
@@ -31,7 +31,7 @@ namespace Topshelf.HostConfigurators
         public string Password { get; private set; }
         public string Username { get; private set; }
 
-        public HostBuilder Configure(HostBuilder builder)
+        public IHostBuilder Configure(IHostBuilder builder)
         {
             if (builder == null)
                 throw new ArgumentNullException("builder");
@@ -41,7 +41,7 @@ namespace Topshelf.HostConfigurators
             return builder;
         }
 
-        public IEnumerable<ValidateResult> Validate()
+        public IEnumerable<IValidateResult> Validate()
         {
             if (string.IsNullOrEmpty(Username))
                 yield return this.Failure("Username", "must be specified for a User account type");

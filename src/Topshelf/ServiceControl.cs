@@ -12,9 +12,12 @@
 // specific language governing permissions and limitations under the License.
 namespace Topshelf
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public interface ServiceControl
     {
-        bool Start(HostControl hostControl);
-        bool Stop(HostControl hostControl);
+        bool Start(IHostControl hostControl);
+        bool Stop(IHostControl hostControl);
     }
 }

@@ -15,7 +15,7 @@ namespace Topshelf.Options
     using HostConfigurators;
 
     public class UnknownOption :
-        Option
+        IOption
     {
         readonly string _text;
 
@@ -24,7 +24,7 @@ namespace Topshelf.Options
             _text = text;
         }
 
-        public void ApplyTo(HostConfigurator configurator)
+        public void ApplyTo(IHostConfigurator configurator)
         {
             configurator.AddConfigurator(new UnknownCommandLineOptionHostConfigurator(_text));
         }

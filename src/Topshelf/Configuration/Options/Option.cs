@@ -14,8 +14,15 @@ namespace Topshelf.Options
 {
     using HostConfigurators;
 
-    public interface Option
+    /// <summary>
+    /// 应用到主机的参数选项接口
+    /// </summary>
+    public interface IOption
     {
-        void ApplyTo(HostConfigurator configurator);
+        /// <summary>
+        /// 应用参数选项
+        /// </summary>
+        /// <param name="configurator"></param>
+        void ApplyTo(IHostConfigurator configurator);
     }
 }

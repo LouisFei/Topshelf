@@ -30,7 +30,7 @@ namespace Topshelf
         /// </summary>
         /// <param name="configureCallback"> Configuration method to call 主机配置回调方法</param>
         /// <returns> A Topshelf service host, ready to run 返回一个Topshelf服务主机（准备运行）</returns>
-        public static Host New(Action<HostConfigurator> configureCallback)
+        public static IHost New(Action<IHostConfigurator> configureCallback)
         {
             try
             {
@@ -39,6 +39,7 @@ namespace Topshelf
 
                 var configurator = new HostConfiguratorImpl();
 
+                #region 默认使用命名空间作为服务名
                 Type declaringType = configureCallback.Method.DeclaringType;
                 if (declaringType != null)
                 {
@@ -46,12 +47,13 @@ namespace Topshelf
                     if (!string.IsNullOrEmpty(defaultServiceName))
                         configurator.SetServiceName(defaultServiceName);
                 }
+                #endregion
 
                 configureCallback(configurator);
 
                 configurator.ApplyCommandLine();
 
-                ConfigurationResult result = ValidateConfigurationResult.CompileResults(configurator.Validate());
+                IConfigurationResult result = ValidateConfigurationResult.CompileResults(configurator.Validate());
 
                 if (result.Message.Length > 0)
                 {
@@ -59,6 +61,7 @@ namespace Topshelf
                               .InfoFormat("Configuration Result:\n{0}", result.Message);
                 }
 
+                //创建并返回主机实例
                 return configurator.CreateHost();
             }
             catch (Exception ex)
@@ -75,7 +78,7 @@ namespace Topshelf
         /// </summary>
         /// <param name="configureCallback"> Configuration method to call 配置回调方法</param>
         /// <returns> Returns the exit code of the process that should be returned by your application's main method </returns>
-        public static TopshelfExitCode Run(Action<HostConfigurator> configureCallback)
+        public static TopshelfExitCode Run(Action<IHostConfigurator> configureCallback)
         {
             try
             {

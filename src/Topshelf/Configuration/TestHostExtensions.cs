@@ -21,7 +21,7 @@ namespace Topshelf
         /// Configures the test host, which simply starts and stops the service. Meant to be used
         /// to verify the service can be created, started, stopped, and disposed without issues.
         /// </summary>
-        public static HostConfigurator UseTestHost(this HostConfigurator configurator)
+        public static IHostConfigurator UseTestHost(this IHostConfigurator configurator)
         {
             configurator.UseHostBuilder((environment, settings) => new TestBuilder(environment, settings));
             configurator.ApplyCommandLine("");

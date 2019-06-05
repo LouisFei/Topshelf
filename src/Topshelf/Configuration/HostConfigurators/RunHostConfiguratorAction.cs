@@ -18,7 +18,7 @@ namespace Topshelf.HostConfigurators
     using Configurators;
 
     public class RunHostConfiguratorAction :
-        HostBuilderConfigurator
+        IHostBuilderConfigurator
     {
         readonly Action<RunBuilder> _callback;
         readonly string _key;
@@ -29,7 +29,7 @@ namespace Topshelf.HostConfigurators
             _callback = callback;
         }
 
-        public HostBuilder Configure(HostBuilder builder)
+        public IHostBuilder Configure(IHostBuilder builder)
         {
             if (builder == null)
                 throw new ArgumentNullException("builder");
@@ -39,7 +39,7 @@ namespace Topshelf.HostConfigurators
             return builder;
         }
 
-        public IEnumerable<ValidateResult> Validate()
+        public IEnumerable<IValidateResult> Validate()
         {
             if (_callback == null)
                 yield return this.Failure(_key, "must not be null");

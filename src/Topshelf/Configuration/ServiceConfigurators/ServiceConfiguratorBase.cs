@@ -15,8 +15,14 @@ namespace Topshelf.ServiceConfigurators
     using System;
     using Runtime;
 
+    /// <summary>
+    /// 服务配置器抽象基类
+    /// </summary>
     public abstract class ServiceConfiguratorBase
     {
+        /// <summary>
+        /// 服务事件集
+        /// </summary>
         protected readonly ServiceEventsImpl ServiceEvents;
 
         protected ServiceConfiguratorBase()
@@ -24,21 +30,37 @@ namespace Topshelf.ServiceConfigurators
             ServiceEvents = new ServiceEventsImpl();
         }
 
+        /// <summary>
+        /// 添加服务启动前监听
+        /// </summary>
+        /// <param name="callback"></param>
         public void BeforeStartingService(Action<HostStartContext> callback)
         {
             ServiceEvents.AddBeforeStart(callback);
         }
 
+        /// <summary>
+        /// 添加服务启动后监听
+        /// </summary>
+        /// <param name="callback"></param>
         public void AfterStartingService(Action<HostStartedContext> callback)
         {
             ServiceEvents.AddAfterStart(callback);
         }
 
+        /// <summary>
+        /// 添加服务停止前监听
+        /// </summary>
+        /// <param name="callback"></param>
         public void BeforeStoppingService(Action<HostStopContext> callback)
         {
             ServiceEvents.AddBeforeStop(callback);
         }
 
+        /// <summary>
+        /// 添加服务停止后监听
+        /// </summary>
+        /// <param name="callback"></param>
         public void AfterStoppingService(Action<HostStoppedContext> callback)
         {
             ServiceEvents.AddAfterStop(callback);

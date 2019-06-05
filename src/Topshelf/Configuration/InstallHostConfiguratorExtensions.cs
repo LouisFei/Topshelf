@@ -18,7 +18,7 @@ namespace Topshelf
 
     public static class InstallHostConfiguratorExtensions
     {
-        public static HostConfigurator BeforeInstall(this HostConfigurator configurator, Action callback)
+        public static IHostConfigurator BeforeInstall(this IHostConfigurator configurator, Action callback)
         {
             if (configurator == null)
                 throw new ArgumentNullException("configurator");
@@ -29,8 +29,8 @@ namespace Topshelf
             return configurator;
         }
 
-        public static HostConfigurator BeforeInstall(this HostConfigurator configurator,
-            Action<InstallHostSettings> callback)
+        public static IHostConfigurator BeforeInstall(this IHostConfigurator configurator,
+            Action<IInstallHostSettings> callback)
         {
             if (configurator == null)
                 throw new ArgumentNullException("configurator");
@@ -41,7 +41,7 @@ namespace Topshelf
             return configurator;
         }
 
-        public static HostConfigurator AfterInstall(this HostConfigurator configurator, Action callback)
+        public static IHostConfigurator AfterInstall(this IHostConfigurator configurator, Action callback)
         {
             if (configurator == null)
                 throw new ArgumentNullException("configurator");
@@ -52,8 +52,8 @@ namespace Topshelf
             return configurator;
         }
 
-        public static HostConfigurator AfterInstall(this HostConfigurator configurator,
-            Action<InstallHostSettings> callback)
+        public static IHostConfigurator AfterInstall(this IHostConfigurator configurator,
+            Action<IInstallHostSettings> callback)
         {
             if (configurator == null)
                 throw new ArgumentNullException("configurator");
@@ -63,7 +63,7 @@ namespace Topshelf
             return configurator;
         }
 
-        public static HostConfigurator BeforeRollback(this HostConfigurator configurator, Action callback)
+        public static IHostConfigurator BeforeRollback(this IHostConfigurator configurator, Action callback)
         {
             if (configurator == null)
                 throw new ArgumentNullException("configurator");
@@ -74,8 +74,8 @@ namespace Topshelf
             return configurator;
         }
 
-        public static HostConfigurator BeforeRollback(this HostConfigurator configurator,
-            Action<InstallHostSettings> callback)
+        public static IHostConfigurator BeforeRollback(this IHostConfigurator configurator,
+            Action<IInstallHostSettings> callback)
         {
             if (configurator == null)
                 throw new ArgumentNullException("configurator");
@@ -86,7 +86,7 @@ namespace Topshelf
             return configurator;
         }
 
-        public static HostConfigurator AfterRollback(this HostConfigurator configurator, Action callback)
+        public static IHostConfigurator AfterRollback(this IHostConfigurator configurator, Action callback)
         {
             if (configurator == null)
                 throw new ArgumentNullException("configurator");
@@ -97,8 +97,8 @@ namespace Topshelf
             return configurator;
         }
 
-        public static HostConfigurator AfterRollback(this HostConfigurator configurator,
-            Action<InstallHostSettings> callback)
+        public static IHostConfigurator AfterRollback(this IHostConfigurator configurator,
+            Action<IInstallHostSettings> callback)
         {
             if (configurator == null)
                 throw new ArgumentNullException("configurator");

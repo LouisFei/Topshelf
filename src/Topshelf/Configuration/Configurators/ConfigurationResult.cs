@@ -14,9 +14,12 @@ namespace Topshelf.Configurators
 {
     using System.Collections.Generic;
 
-    public interface ConfigurationResult
+    /// <summary>
+    /// ≈‰÷√Ω·π˚
+    /// </summary>
+    public interface IConfigurationResult
     {
-        IEnumerable<ValidateResult> Results { get; }
+        IEnumerable<IValidateResult> Results { get; }
 
         string Message { get; }
     }

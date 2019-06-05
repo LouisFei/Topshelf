@@ -17,7 +17,7 @@ namespace Topshelf
 
     public static class ServiceRecoveryConfiguratorExtensions
     {
-        public static HostConfigurator EnableServiceRecovery(this HostConfigurator configurator, Action<ServiceRecoveryConfigurator> configureCallback)
+        public static IHostConfigurator EnableServiceRecovery(this IHostConfigurator configurator, Action<ServiceRecoveryConfigurator> configureCallback)
         {
             if (configurator == null)
                 throw new ArgumentNullException("configurator");

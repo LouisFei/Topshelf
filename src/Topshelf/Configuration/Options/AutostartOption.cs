@@ -15,9 +15,9 @@ namespace Topshelf.Options
     using HostConfigurators;
 
     public class AutostartOption :
-        Option
+        IOption
     {
-        public void ApplyTo(HostConfigurator configurator)
+        public void ApplyTo(IHostConfigurator configurator)
         {
                 configurator.StartAutomatically();
         }

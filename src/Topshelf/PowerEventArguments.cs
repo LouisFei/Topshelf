@@ -12,7 +12,7 @@
 // specific language governing permissions and limitations under the License.
 namespace Topshelf
 {
-    public interface PowerEventArguments
+    public interface IPowerEventArguments
     {
         PowerEventCode EventCode { get; }
     }

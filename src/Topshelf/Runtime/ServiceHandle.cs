@@ -16,64 +16,73 @@ namespace Topshelf.Runtime
 
 
     /// <summary>
-    /// A handle to a service being hosted by the Host
+    /// A handle to a service being hosted by the Host.
+    /// 定义主机可以对服务进行的操作。
     /// </summary>
-    public interface ServiceHandle :
+    public interface IServiceHandle :
         IDisposable
     {
         /// <summary>
         /// Start the service
+        /// 启动服务
         /// </summary>
         /// <param name="hostControl"></param>
         /// <returns>True if the service was started, otherwise false</returns>
-        bool Start(HostControl hostControl);
+        bool Start(IHostControl hostControl);
 
         /// <summary>
         /// Pause the service
+        /// 暂停服务
         /// </summary>
         /// <param name="hostControl"></param>
         /// <returns>True if the service was paused, otherwise false</returns>
-        bool Pause(HostControl hostControl);
+        bool Pause(IHostControl hostControl);
 
         /// <summary>
         /// Continue the service from a paused state
+        /// 继续服务
         /// </summary>
         /// <param name="hostControl"></param>
         /// <returns>True if the service was able to continue, otherwise false</returns>
-        bool Continue(HostControl hostControl);
+        bool Continue(IHostControl hostControl);
 
         /// <summary>
         /// Stop the service
+        /// 停止服务
         /// </summary>
         /// <param name="hostControl"></param>
         /// <returns>True if the service was stopped, or false if the service cannot be stopped at this time</returns>
-        bool Stop(HostControl hostControl);
+        bool Stop(IHostControl hostControl);
 
         /// <summary>
         /// Handle the shutdown event
+        /// 关闭服务
         /// </summary>
         /// <param name="hostControl"></param>
-        void Shutdown(HostControl hostControl);
+        void Shutdown(IHostControl hostControl);
 
         /// <summary>
         /// Handle the session change event
+        /// 会话改变事件处理
         /// </summary>
         /// <param name="hostControl"></param>
         /// <param name="arguments"></param>
-        void SessionChanged(HostControl hostControl, SessionChangedArguments arguments);
+        void SessionChanged(IHostControl hostControl, ISessionChangedArguments arguments);
 
         /// <summary>
         /// Handle the power change event
+        /// 电源改变事件处理？？
         /// </summary>
         /// <param name="hostControl"></param>
         /// <param name="arguments"></param>
-        bool PowerEvent(HostControl hostControl, PowerEventArguments arguments);
+        bool PowerEvent(IHostControl hostControl, IPowerEventArguments arguments);
 
         /// <summary>
         /// Handle the custom command
+        /// 处理自定义命令
         /// </summary>
         /// <param name="hostControl"></param>
         /// <param name="command"></param>
-        void CustomCommand(HostControl hostControl, int command);
+        void CustomCommand(IHostControl hostControl, int command);
     }
 }

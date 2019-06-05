@@ -14,8 +14,11 @@ namespace Topshelf.Builders
 {
     using Runtime;
 
-    public interface EnvironmentBuilder
+    /// <summary>
+    /// 环境装饰器
+    /// </summary>
+    public interface IEnvironmentBuilder
     {
-        HostEnvironment Build();
+        IHostEnvironment Build();
     }
 }

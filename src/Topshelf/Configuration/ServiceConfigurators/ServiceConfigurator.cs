@@ -15,41 +15,52 @@ namespace Topshelf.ServiceConfigurators
     using System;
     using Runtime;
 
+    /// <summary>
+    /// 服务配置器接口
+    /// </summary>
     public interface ServiceConfigurator
     {
         /// <summary>
         /// Registers a callback invoked before the service Start method is called.
+        /// 注册在调用服务启动方法之前调用的回调。
         /// </summary>
         void BeforeStartingService(Action<HostStartContext> callback);
 
         /// <summary>
         /// Registers a callback invoked after the service Start method is called.
+        /// 注册在调用服务启动方法后调用的回调。
         /// </summary>
         void AfterStartingService(Action<HostStartedContext> callback);
 
         /// <summary>
         /// Registers a callback invoked before the service Stop method is called.
+        /// 注册在调用服务停止方法之前调用的回调。
         /// </summary>
         void BeforeStoppingService(Action<HostStopContext> callback);
 
         /// <summary>
         /// Registers a callback invoked after the service Stop method is called.
+        /// 注册在调用服务停止方法后调用的回调。
         /// </summary>
         void AfterStoppingService(Action<HostStoppedContext> callback);
     }
 
+    /// <summary>
+    /// 泛型服务配置器接口
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public interface ServiceConfigurator<T> :
         ServiceConfigurator
         where T : class
     {
         void ConstructUsing(ServiceFactory<T> serviceFactory);
-        void WhenStarted(Func<T, HostControl, bool> start);
-        void WhenStopped(Func<T, HostControl, bool> stop);
-        void WhenPaused(Func<T, HostControl, bool> pause);
-        void WhenContinued(Func<T, HostControl, bool> @continue);
-        void WhenShutdown(Action<T, HostControl> shutdown);
-        void WhenSessionChanged(Action<T, HostControl, SessionChangedArguments> sessionChanged);
-        void WhenPowerEvent(Func<T, HostControl, PowerEventArguments, bool> powerEvent);
-        void WhenCustomCommandReceived(Action<T, HostControl, int> customCommandReceived);
+        void WhenStarted(Func<T, IHostControl, bool> start);
+        void WhenStopped(Func<T, IHostControl, bool> stop);
+        void WhenPaused(Func<T, IHostControl, bool> pause);
+        void WhenContinued(Func<T, IHostControl, bool> @continue);
+        void WhenShutdown(Action<T, IHostControl> shutdown);
+        void WhenSessionChanged(Action<T, IHostControl, ISessionChangedArguments> sessionChanged);
+        void WhenPowerEvent(Func<T, IHostControl, IPowerEventArguments, bool> powerEvent);
+        void WhenCustomCommandReceived(Action<T, IHostControl, int> customCommandReceived);
     }
 }

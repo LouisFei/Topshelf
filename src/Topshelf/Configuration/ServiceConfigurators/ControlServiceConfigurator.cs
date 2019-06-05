@@ -18,26 +18,40 @@ namespace Topshelf.ServiceConfigurators
     using Configurators;
     using Runtime;
 
+    /// <summary>
+    /// 控制服务配置
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class ControlServiceConfigurator<T> :
         ServiceConfiguratorBase,
         ServiceConfigurator,
-        Configurator
+        IConfigurator
         where T : class, ServiceControl
     {
-        readonly Func<HostSettings, T> _serviceFactory;
+        /// <summary>
+        /// 服务工厂
+        /// </summary>
+        readonly Func<IHostSettings, T> _serviceFactory;
 
-        public ControlServiceConfigurator(Func<HostSettings, T> serviceFactory)
+        /// <summary>
+        /// 创建控制服务配置
+        /// </summary>
+        /// <param name="serviceFactory"></param>
+        public ControlServiceConfigurator(Func<IHostSettings, T> serviceFactory)
         {
             _serviceFactory = serviceFactory;
         }
 
-        public IEnumerable<ValidateResult> Validate()
+        public IEnumerable<IValidateResult> Validate()
         {
             yield break;
         }
 
-
-        public ServiceBuilder Build()
+        /// <summary>
+        /// 构建
+        /// </summary>
+        /// <returns></returns>
+        public IServiceBuilder Build()
         {
             var serviceBuilder = new ControlServiceBuilder<T>(_serviceFactory, ServiceEvents);
             return serviceBuilder;

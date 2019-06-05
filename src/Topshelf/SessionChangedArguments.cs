@@ -12,7 +12,7 @@
 // specific language governing permissions and limitations under the License.
 namespace Topshelf
 {
-    public interface SessionChangedArguments
+    public interface ISessionChangedArguments
     {
         SessionChangeReasonCode ReasonCode { get; }
         int SessionId { get; }

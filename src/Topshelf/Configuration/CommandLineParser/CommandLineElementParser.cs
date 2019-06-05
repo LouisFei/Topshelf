@@ -17,20 +17,28 @@ namespace Topshelf.CommandLineParser
     using System.IO;
     using System.Linq;
 
-    class CommandLineElementParser<TResult> :
+    /// <summary>
+    /// 命令行元素解析器
+    /// </summary>
+    /// <typeparam name="TResultValue">输出值类型</typeparam>
+    class CommandLineElementParser<TResultValue> :
         AbstractParser<IEnumerable<ICommandLineElement>>,
-        ICommandLineElementParser<TResult>
+        ICommandLineElementParser<TResultValue>
     {
-        readonly IList<Parser<IEnumerable<ICommandLineElement>, TResult>> _parsers;
+        readonly IList<ParserDelegate<IEnumerable<ICommandLineElement>, TResultValue>> _parsers;
 
+        /// <summary>
+        /// 创建命令行元素解析器
+        /// </summary>
         public CommandLineElementParser()
         {
-            _parsers = new List<Parser<IEnumerable<ICommandLineElement>, TResult>>();
-
-            All = from element in _parsers.FirstMatch() select element;
+            _parsers = new List<ParserDelegate<IEnumerable<ICommandLineElement>, TResultValue>>();
+            
+            var q = from element in _parsers.FirstMatch() select element;
+            All = q;
         }
 
-        public Parser<IEnumerable<ICommandLineElement>, ICommandLineElement> AnyElement
+        public ParserDelegate<IEnumerable<ICommandLineElement>, ICommandLineElement> AnyElement
         {
             get
             {
@@ -41,77 +49,82 @@ namespace Topshelf.CommandLineParser
             }
         }
 
-        public Parser<IEnumerable<ICommandLineElement>, TResult> All { get; set; }
+        public ParserDelegate<IEnumerable<ICommandLineElement>, TResultValue> All { get; set; }
 
-        public void Add(Parser<IEnumerable<ICommandLineElement>, TResult> parser)
+        public void Add(ParserDelegate<IEnumerable<ICommandLineElement>, TResultValue> parser)
         {
             _parsers.Add(parser);
         }
 
-        public Parser<IEnumerable<ICommandLineElement>, IDefinitionElement> Definition()
+        public ParserDelegate<IEnumerable<ICommandLineElement>, IDefinitionElement> Definition()
         {
             return from c in AnyElement
                    where c.GetType() == typeof(DefinitionElement)
                    select (IDefinitionElement)c;
         }
 
-        public Parser<IEnumerable<ICommandLineElement>, IDefinitionElement> Definition(string key)
+        public ParserDelegate<IEnumerable<ICommandLineElement>, IDefinitionElement> Definition(string key)
         {
             return from def in Definition()
                    where def.Key == key
                    select def;
         }
 
-        public Parser<IEnumerable<ICommandLineElement>, IDefinitionElement> Definitions(params string[] keys)
+        public ParserDelegate<IEnumerable<ICommandLineElement>, IDefinitionElement> Definitions(params string[] keys)
         {
             return from def in Definition()
                    where keys.Contains(def.Key)
                    select def;
         }
 
-        public Parser<IEnumerable<ICommandLineElement>, ISwitchElement> Switch()
+        public ParserDelegate<IEnumerable<ICommandLineElement>, ISwitchElement> Switch()
         {
             return from c in AnyElement
                    where c.GetType() == typeof(SwitchElement)
                    select (ISwitchElement)c;
         }
 
-        public Parser<IEnumerable<ICommandLineElement>, ISwitchElement> Switch(string key)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public ParserDelegate<IEnumerable<ICommandLineElement>, ISwitchElement> Switch(string key)
         {
             return from sw in Switch()
                    where string.Equals(sw.Key, key, StringComparison.OrdinalIgnoreCase)
                    select sw;
         }
 
-        public Parser<IEnumerable<ICommandLineElement>, ISwitchElement> Switches(params string[] keys)
+        public ParserDelegate<IEnumerable<ICommandLineElement>, ISwitchElement> Switches(params string[] keys)
         {
             return from sw in Switch()
                    where keys.Contains(sw.Key)
                    select sw;
         }
 
-        public Parser<IEnumerable<ICommandLineElement>, IArgumentElement> Argument()
+        public ParserDelegate<IEnumerable<ICommandLineElement>, IArgumentElement> Argument()
         {
             return from c in AnyElement
                    where c.GetType() == typeof(ArgumentElement)
                    select (IArgumentElement)c;
         }
 
-        public Parser<IEnumerable<ICommandLineElement>, IArgumentElement> Argument(string value)
+        public ParserDelegate<IEnumerable<ICommandLineElement>, IArgumentElement> Argument(string value)
         {
             return from arg in Argument()
                    where string.Equals(arg.Id, value, StringComparison.OrdinalIgnoreCase)
                    select arg;
         }
 
-        public Parser<IEnumerable<ICommandLineElement>, IArgumentElement> Argument(Predicate<IArgumentElement> pred)
+        public ParserDelegate<IEnumerable<ICommandLineElement>, IArgumentElement> Argument(Predicate<IArgumentElement> pred)
         {
             return from arg in Argument()
                    where pred(arg)
                    select arg;
         }
 
-        public Parser<IEnumerable<ICommandLineElement>, IArgumentElement> ValidPath()
+        public ParserDelegate<IEnumerable<ICommandLineElement>, IArgumentElement> ValidPath()
         {
             return from c in AnyElement
                    where c.GetType() == typeof(ArgumentElement)
@@ -119,9 +132,9 @@ namespace Topshelf.CommandLineParser
                    select (IArgumentElement)c;
         }
 
-        public IEnumerable<TResult> Parse(IEnumerable<ICommandLineElement> elements)
+        public IEnumerable<TResultValue> Parse(IEnumerable<ICommandLineElement> elements)
         {
-            Result<IEnumerable<ICommandLineElement>, TResult> result = All(elements);
+            Result<IEnumerable<ICommandLineElement>, TResultValue> result = All(elements);
             while (result != null)
             {
                 yield return result.Value;

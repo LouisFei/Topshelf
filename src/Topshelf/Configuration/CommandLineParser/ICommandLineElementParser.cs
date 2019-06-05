@@ -17,28 +17,30 @@ namespace Topshelf.CommandLineParser
 
     /// <summary>
     ///   Used to configure the command line element parser
+    ///   用于配置命令行元素解析器
     /// </summary>
-    /// <typeparam name="TResult"> The type of object returned as a result of the parse </typeparam>
-    interface ICommandLineElementParser<TResult>
+    /// <typeparam name="TResultValue"> The type of object returned as a result of the parse </typeparam>
+    interface ICommandLineElementParser<TResultValue>
     {
         /// <summary>
         ///   Adds a new pattern to the parser
+        ///   向解析器添加新模式
         /// </summary>
         /// <param name="parser"> The pattern to match and return the resulting object </param>
-        void Add(Parser<IEnumerable<ICommandLineElement>, TResult> parser);
+        void Add(ParserDelegate<IEnumerable<ICommandLineElement>, TResultValue> parser);
         
-        Parser<IEnumerable<ICommandLineElement>, IArgumentElement> Argument();
-        Parser<IEnumerable<ICommandLineElement>, IArgumentElement> Argument(string value);
-        Parser<IEnumerable<ICommandLineElement>, IArgumentElement> Argument(Predicate<IArgumentElement> pred);
+        ParserDelegate<IEnumerable<ICommandLineElement>, IArgumentElement> Argument();
+        ParserDelegate<IEnumerable<ICommandLineElement>, IArgumentElement> Argument(string value);
+        ParserDelegate<IEnumerable<ICommandLineElement>, IArgumentElement> Argument(Predicate<IArgumentElement> pred);
 
-        Parser<IEnumerable<ICommandLineElement>, IDefinitionElement> Definition();
-        Parser<IEnumerable<ICommandLineElement>, IDefinitionElement> Definition(string key);
-        Parser<IEnumerable<ICommandLineElement>, IDefinitionElement> Definitions(params string[] keys);
+        ParserDelegate<IEnumerable<ICommandLineElement>, IDefinitionElement> Definition();
+        ParserDelegate<IEnumerable<ICommandLineElement>, IDefinitionElement> Definition(string key);
+        ParserDelegate<IEnumerable<ICommandLineElement>, IDefinitionElement> Definitions(params string[] keys);
 
-        Parser<IEnumerable<ICommandLineElement>, ISwitchElement> Switch();
-        Parser<IEnumerable<ICommandLineElement>, ISwitchElement> Switch(string key);
-        Parser<IEnumerable<ICommandLineElement>, ISwitchElement> Switches(params string[] keys);
+        ParserDelegate<IEnumerable<ICommandLineElement>, ISwitchElement> Switch();
+        ParserDelegate<IEnumerable<ICommandLineElement>, ISwitchElement> Switch(string key);
+        ParserDelegate<IEnumerable<ICommandLineElement>, ISwitchElement> Switches(params string[] keys);
 
-        Parser<IEnumerable<ICommandLineElement>, IArgumentElement> ValidPath();
+        ParserDelegate<IEnumerable<ICommandLineElement>, IArgumentElement> ValidPath();
     }
 }

@@ -18,18 +18,18 @@ namespace Topshelf.Hosts
     using Runtime;
 
     public class UninstallHost :
-        Host
+        IHost
     {
         static readonly LogWriter _log = HostLogger.Get<UninstallHost>();
 
-        readonly HostEnvironment _environment;
+        readonly IHostEnvironment _environment;
         readonly IEnumerable<Action> _postActions;
         readonly IEnumerable<Action> _preActions;
-        readonly HostSettings _settings;
+        readonly IHostSettings _settings;
         readonly bool _sudo;
 
 
-        public UninstallHost(HostEnvironment environment, HostSettings settings, IEnumerable<Action> preActions,
+        public UninstallHost(IHostEnvironment environment, IHostSettings settings, IEnumerable<Action> preActions,
             IEnumerable<Action> postActions,
             bool sudo)
         {

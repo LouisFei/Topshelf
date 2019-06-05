@@ -18,7 +18,7 @@ namespace Topshelf
 
     public static class StartModeExtensions
     {
-        public static HostConfigurator StartAutomatically(this HostConfigurator configurator)
+        public static IHostConfigurator StartAutomatically(this IHostConfigurator configurator)
         {
             if (configurator == null)
                 throw new ArgumentNullException("configurator");
@@ -28,7 +28,7 @@ namespace Topshelf
             return configurator;
         }
 
-        public static HostConfigurator StartAutomaticallyDelayed(this HostConfigurator configurator)
+        public static IHostConfigurator StartAutomaticallyDelayed(this IHostConfigurator configurator)
         {
             if (configurator == null)
                 throw new ArgumentNullException("configurator");
@@ -38,7 +38,7 @@ namespace Topshelf
             return configurator;
         }
 
-        public static HostConfigurator StartManually(this HostConfigurator configurator)
+        public static IHostConfigurator StartManually(this IHostConfigurator configurator)
         {
             if (configurator == null)
                 throw new ArgumentNullException("configurator");
@@ -48,7 +48,7 @@ namespace Topshelf
             return configurator;
         }
 
-        public static HostConfigurator Disabled(this HostConfigurator configurator)
+        public static IHostConfigurator Disabled(this IHostConfigurator configurator)
         {
             if (configurator == null)
                 throw new ArgumentNullException("configurator");

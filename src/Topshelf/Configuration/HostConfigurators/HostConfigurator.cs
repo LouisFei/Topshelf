@@ -16,9 +16,8 @@ namespace Topshelf.HostConfigurators
 
     /// <summary>
     /// 主机配置器接口。
-    /// 接口命名建议以“I”为前辍。
     /// </summary>
-    public interface HostConfigurator
+    public interface IHostConfigurator
     {
         /// <summary>
         ///   Specifies the name of the service as it should be displayed in the service control manager
@@ -82,27 +81,28 @@ namespace Topshelf.HostConfigurators
 
         /// <summary>
         ///   Specifies the builder factory to use when the service is invoked
+        ///   指定调用服务时要使用的构建器工厂
         /// </summary>
         /// <param name="hostBuilderFactory"> </param>
-        void UseHostBuilder(HostBuilderFactory hostBuilderFactory);
+        void UseHostBuilder(HostBuilderFactoryDelegate hostBuilderFactory);
 
         /// <summary>
         ///   Sets the service builder to use for creating the service
         /// </summary>
         /// <param name="serviceBuilderFactory"> </param>
-        void UseServiceBuilder(ServiceBuilderFactory serviceBuilderFactory);
+        void UseServiceBuilder(ServiceBuilderFactoryDelegate serviceBuilderFactory);
 
         /// <summary>
         ///   Sets the environment builder to use for creating the service (defaults to Windows)
         /// </summary>
         /// <param name="environmentBuilderFactory"> </param>
-        void UseEnvironmentBuilder(EnvironmentBuilderFactory environmentBuilderFactory);
+        void UseEnvironmentBuilder(EnvironmentBuilderFactoryDelegate environmentBuilderFactory);
 
         /// <summary>
         ///   Adds a a configurator for the host builder to the configurator
         /// </summary>
         /// <param name="configurator"> </param>
-        void AddConfigurator(HostBuilderConfigurator configurator);
+        void AddConfigurator(IHostBuilderConfigurator configurator);
 
         /// <summary>
         /// Parses the command line options and applies them to the host configurator
@@ -110,15 +110,20 @@ namespace Topshelf.HostConfigurators
         void ApplyCommandLine();
 
         /// <summary>
-        /// Parses the command line options from the specified command line and applies them to the host configurator
+        /// Parses the command line options from the specified command line and applies them to the host configurator.
+        /// 解析指定命令行中的命令行选项，并将其应用于主机配置程序。
         /// </summary>
         /// <param name="commandLine"></param>
         void ApplyCommandLine(string commandLine);
 
         /// <summary>
         /// Adds a command line switch (--name) that can be either true or false. Switches are CASE SeNsITiVe
+        /// 添加一个命令行开关(—name)，该开关可以为真也可以为假。开关区分大小写
         /// </summary>
-        /// <param name="name">The name of the switch, as it will appear on the command line</param>
+        /// <param name="name">
+        /// The name of the switch, as it will appear on the command line
+        /// 开关的名称，因为它将出现在命令行中
+        /// </param>
         /// <param name="callback"></param>
         void AddCommandLineSwitch(string name, Action<bool> callback);
 

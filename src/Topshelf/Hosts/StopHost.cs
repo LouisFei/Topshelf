@@ -17,13 +17,13 @@ namespace Topshelf.Hosts
     using Runtime;
 
     public class StopHost :
-        Host
+        IHost
     {
         static readonly LogWriter _log = HostLogger.Get<StopHost>();
-        readonly HostEnvironment _environment;
-        readonly HostSettings _settings;
+        readonly IHostEnvironment _environment;
+        readonly IHostSettings _settings;
 
-        public StopHost(HostEnvironment environment, HostSettings settings)
+        public StopHost(IHostEnvironment environment, IHostSettings settings)
         {
             _environment = environment;
             _settings = settings;

@@ -20,11 +20,11 @@ namespace Topshelf.Configurators
 
     [Serializable, DebuggerDisplay("{Message}")]
     public class ValidateConfigurationResult :
-        ConfigurationResult
+        IConfigurationResult
     {
-        readonly IList<ValidateResult> _results;
+        readonly IList<IValidateResult> _results;
 
-        ValidateConfigurationResult(IEnumerable<ValidateResult> results)
+        ValidateConfigurationResult(IEnumerable<IValidateResult> results)
         {
             _results = results.ToList();
         }
@@ -34,7 +34,7 @@ namespace Topshelf.Configurators
             get { return _results.Any(x => x.Disposition == ValidationResultDisposition.Failure); }
         }
 
-        public IEnumerable<ValidateResult> Results
+        public IEnumerable<IValidateResult> Results
         {
             get { return _results; }
         }
@@ -51,7 +51,7 @@ namespace Topshelf.Configurators
             }
         }
 
-        public static ConfigurationResult CompileResults(IEnumerable<ValidateResult> results)
+        public static IConfigurationResult CompileResults(IEnumerable<IValidateResult> results)
         {
             var result = new ValidateConfigurationResult(results);
 

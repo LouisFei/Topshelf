@@ -21,7 +21,7 @@ namespace Topshelf.HostConfigurators
 
 
     public class PrefixHelpTextHostConfigurator :
-        HostBuilderConfigurator
+        IHostBuilderConfigurator
     {
         public PrefixHelpTextHostConfigurator(Assembly assembly, string resourceName)
         {
@@ -38,9 +38,9 @@ namespace Topshelf.HostConfigurators
         public string ResourceName { get; private set; }
         public string Text { get; private set; }
 
-        public IEnumerable<ValidateResult> Validate()
+        public IEnumerable<IValidateResult> Validate()
         {
-            ValidateResult loadResult = null;
+            IValidateResult loadResult = null;
             if (Assembly != null)
             {
                 if (ResourceName == null)
@@ -72,7 +72,7 @@ namespace Topshelf.HostConfigurators
                 yield return this.Failure("No additional help text was specified");
         }
 
-        public HostBuilder Configure(HostBuilder builder)
+        public IHostBuilder Configure(IHostBuilder builder)
         {
             builder.Match<HelpBuilder>(x => x.SetAdditionalHelpText(Text));
 

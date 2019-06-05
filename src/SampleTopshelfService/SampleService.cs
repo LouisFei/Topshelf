@@ -33,7 +33,7 @@ namespace SampleTopshelfService
             _throwUnhandled = throwUnhandled;
         }
 
-        public bool Start(HostControl hostControl)
+        public bool Start(IHostControl hostControl)
         {
             _log.Info("SampleService Starting...");
 
@@ -63,7 +63,7 @@ namespace SampleTopshelfService
             return true;
         }
 
-        public bool Stop(HostControl hostControl)
+        public bool Stop(IHostControl hostControl)
         {
             _log.Info("SampleService Stopped");
 
@@ -73,14 +73,14 @@ namespace SampleTopshelfService
             return true;
         }
 
-        public bool Pause(HostControl hostControl)
+        public bool Pause(IHostControl hostControl)
         {
             _log.Info("SampleService Paused");
 
             return true;
         }
 
-        public bool Continue(HostControl hostControl)
+        public bool Continue(IHostControl hostControl)
         {
             _log.Info("SampleService Continued");
 

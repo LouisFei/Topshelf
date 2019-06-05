@@ -18,15 +18,15 @@ namespace Topshelf.Hosts
     using Runtime;
 
     public class TestHost :
-        Host,
-        HostControl
+        IHost,
+        IHostControl
     {
-        readonly HostEnvironment _environment;
+        readonly IHostEnvironment _environment;
         readonly LogWriter _log = HostLogger.Get<TestHost>();
-        readonly ServiceHandle _serviceHandle;
-        readonly HostSettings _settings;
+        readonly IServiceHandle _serviceHandle;
+        readonly IHostSettings _settings;
 
-        public TestHost(HostSettings settings, HostEnvironment environment, ServiceHandle serviceHandle)
+        public TestHost(IHostSettings settings, IHostEnvironment environment, IServiceHandle serviceHandle)
         {
             if (settings == null)
                 throw new ArgumentNullException("settings");
@@ -73,18 +73,18 @@ namespace Topshelf.Hosts
             return exitCode;
         }
 
-        void HostControl.RequestAdditionalTime(TimeSpan timeRemaining)
+        void IHostControl.RequestAdditionalTime(TimeSpan timeRemaining)
         {
             // good for you, maybe we'll use a timer for startup at some point but for debugging
             // it's a pain in the ass
         }
 
-        void HostControl.Stop()
+        void IHostControl.Stop()
         {
             _log.Info("Service Stop requested, exiting.");
         }
 
-        void HostControl.Restart()
+        void IHostControl.Restart()
         {
             _log.Info("Service Restart requested, but we don't support that here, so we are exiting.");
         }

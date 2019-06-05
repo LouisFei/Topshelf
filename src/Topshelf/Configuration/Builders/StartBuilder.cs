@@ -17,34 +17,34 @@ namespace Topshelf.Builders
     using Runtime;
 
     public class StartBuilder :
-        HostBuilder
+        IHostBuilder
     {
-        readonly HostBuilder _builder;
-        readonly HostEnvironment _environment;
-        readonly HostSettings _settings;
+        readonly IHostBuilder _builder;
+        readonly IHostEnvironment _environment;
+        readonly IHostSettings _settings;
 
-        public StartBuilder(HostBuilder builder)
+        public StartBuilder(IHostBuilder builder)
         {
             _builder = GetParentBuilder(builder);
             _settings = builder.Settings;
             _environment = builder.Environment;
         }
 
-        public HostEnvironment Environment
+        public IHostEnvironment Environment
         {
             get { return _environment; }
         }
 
-        public HostSettings Settings
+        public IHostSettings Settings
         {
             get { return _settings; }
         }
 
-        public Host Build(ServiceBuilder serviceBuilder)
+        public IHost Build(IServiceBuilder serviceBuilder)
         {
             if (_builder != null)
             {
-                Host parentHost = _builder.Build(serviceBuilder);
+                IHost parentHost = _builder.Build(serviceBuilder);
 
                 return new StartHost(_environment, _settings, parentHost);
             }
@@ -53,7 +53,7 @@ namespace Topshelf.Builders
         }
 
         public void Match<T>(Action<T> callback)
-            where T : class, HostBuilder
+            where T : class, IHostBuilder
         {
             if (callback == null)
                 throw new ArgumentNullException("callback");
@@ -65,9 +65,9 @@ namespace Topshelf.Builders
             }
         }
 
-        static HostBuilder GetParentBuilder(HostBuilder builder)
+        static IHostBuilder GetParentBuilder(IHostBuilder builder)
         {
-            HostBuilder result = null;
+            IHostBuilder result = null;
 
             builder.Match<InstallBuilder>(x => { result = builder; });
 

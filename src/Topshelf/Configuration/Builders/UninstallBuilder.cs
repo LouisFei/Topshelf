@@ -18,15 +18,15 @@ namespace Topshelf.Builders
     using Runtime;
 
     public class UninstallBuilder :
-        HostBuilder
+        IHostBuilder
     {
-        readonly HostEnvironment _environment;
+        readonly IHostEnvironment _environment;
         readonly IList<Action> _postActions;
         readonly IList<Action> _preActions;
-        readonly HostSettings _settings;
+        readonly IHostSettings _settings;
         bool _sudo;
 
-        public UninstallBuilder(HostEnvironment environment, HostSettings settings)
+        public UninstallBuilder(IHostEnvironment environment, IHostSettings settings)
         {
             _preActions = new List<Action>();
             _postActions = new List<Action>();
@@ -35,23 +35,23 @@ namespace Topshelf.Builders
             _settings = settings;
         }
 
-        public HostEnvironment Environment
+        public IHostEnvironment Environment
         {
             get { return _environment; }
         }
 
-        public HostSettings Settings
+        public IHostSettings Settings
         {
             get { return _settings; }
         }
 
-        public Host Build(ServiceBuilder serviceBuilder)
+        public IHost Build(IServiceBuilder serviceBuilder)
         {
             return new UninstallHost(_environment, _settings, _preActions, _postActions, _sudo);
         }
 
         public void Match<T>(Action<T> callback)
-            where T : class, HostBuilder
+            where T : class, IHostBuilder
         {
             if (callback == null)
                 throw new ArgumentNullException("callback");
